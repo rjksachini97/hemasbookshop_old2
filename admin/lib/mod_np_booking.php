@@ -17,11 +17,10 @@ $dbobj->close();
 function viewnpbooking(){
 
 	$table = <<<EOT
- 		(SELECT book.np_book_id,cus.cus_id,np.newsp_name,book.np_book_qty,book.np_order_time,book.crnt_date,book.order_date,book.np_tot_price,book.np_pay_status,book.np_book_status 
+ 		(SELECT book.np_book_id,cus.cus_name,np.newsp_name,book.np_book_qty,book.np_order_time,book.crnt_date,book.order_date,book.np_tot_price,book.np_pay_status,book.np_book_status 
  		FROM tbl_newspaper_booking book
 		JOIN tbl_reg_customer cus ON book.cus_id = cus.cus_id
-		JOIN tbl_newspaper np ON book.newsp_id = np.newsp_id WHERE
-		book.np_book_status=1 ORDER BY np_book_id
+		JOIN tbl_newspaper np ON book.newsp_id = np.newsp_id ORDER BY np_book_id
   		) temp
 EOT;
  
@@ -34,13 +33,12 @@ EOT;
 
 	$columns = array(
 	    array( 'db' => 'np_book_id','dt' => 0 ),
-	    array( 'db' => 'cus_id','dt' => 1 ),
+	    array( 'db' => 'cus_name','dt' => 1 ),
 	    array( 'db' => 'newsp_name','dt' => 2 ),
 	    array( 'db' => 'np_book_qty','dt' => 3 ),
-	    array( 'db' => 'np_order_time','dt' => 4 ),
-	    array( 'db' => 'np_tot_price','dt' => 5 ),
-	    array( 'db' => 'np_book_status','dt' => 6 ),
-		array( 'db' => 'np_pay_status' , 'dt' => 7)
+	    array( 'db' => 'np_tot_price','dt' => 4 ),
+	    array( 'db' => 'np_book_status','dt' => 5 ),
+		array( 'db' => 'np_pay_status' , 'dt' => 6)
 	);
 
 	// SQL server connection information
@@ -94,7 +92,7 @@ function viewBookingDetails(){
 		$output .= "<p class=\"form-control-static\">".$row['np_order_time']."</p> ";
 	
 		$output .= "<label class=\"col-xs-5 control-label\">Booked Date : </label>";
-		$output .= "<p class=\"form-control-static\">".$row['current_date']."</p> ";
+		$output .= "<p class=\"form-control-static\">".$row['crnt_date']."</p> ";
 
 		$output .= "<label class=\"col-xs-5 control-label\">Delivery date : </label>";
 		$output .= "<p class=\"form-control-static\">".$row['order_date']."</p> ";
@@ -133,7 +131,7 @@ function confirmBooking(){
 	$sql = "UPDATE tbl_newspaper_booking SET np_book_status=1 WHERE np_book_id=$booking_id";
 
 
-	sendEmail($dbobj,$booking_id);// mail send to customer
+	// sendEmail($dbobj,$booking_id);// mail send to customer
 
 	if($dbobj->query($sql)){
 		echo 1;

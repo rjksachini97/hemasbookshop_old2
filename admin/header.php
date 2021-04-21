@@ -25,7 +25,8 @@ session_start();
 
   <!-- Custom styles for this template-->
   <link href="../sbadmin2/css/sb-admin-2.min.css" rel="stylesheet">
-
+  
+  <script src="../scripts/jquery-3.3.1.min.js" ></script>
 
   <!-- FusionCharts -->
   <script type="text/javascript" src="../fusioncharts/fusioncharts.js"></script>
@@ -42,7 +43,7 @@ session_start();
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="../scripts/jquery-3.3.1.min.js" ></script>
+ 
   <script src="../scripts/jquery-ui-1.12.1/jquery-ui.js"> </script>
   <script src="../scripts/popper.min.js" ></script>
   <script src="../bootstrap-4.1.3/js/bootstrap.min.js" ></script>

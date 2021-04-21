@@ -72,6 +72,7 @@ $(document).ready(function(){
     url:"lib/mod_reports.php?type=AdOrderByYear",
     type:"GET",
     success: function(data){
+
       chartData = data;
             var chartProperties = {
             "theme": "fusion",

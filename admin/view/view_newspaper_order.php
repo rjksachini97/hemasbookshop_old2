@@ -21,7 +21,7 @@ require("../lib/mod_news_order.php");
         ],
         "columnDefs":[
           {
-            "data":[5],
+            "data":5,
             "render":function(data,type,row){
                 if(data=="0"){
                   return "<a href='#' title='completed' ><i class='fas fa-1x text-primary fa-check-double '></i></a>"

@@ -79,10 +79,11 @@ require("../lib/mod_booking_pay.php");
          $.ajax({
             method:"POST",
             url:url,
-            data:{event_id:eid},
+            data:{ad_book_id:eid},
             dataType:"text",
             success:function(result){
-              $("#view-slip").html(result);
+              var path = "../../"+result;
+              $("#view-slip").src(path);
             },
             error:function(eobj,etxt,err){
               console.log(etxt);
@@ -208,6 +209,7 @@ require("../lib/mod_booking_pay.php");
                     </button>
                   </div>
                   <div class="modal-body">
+                    <img src="" id="view_slip"/>
                     <div id="view-slip"></div>
                     
                   </div>
