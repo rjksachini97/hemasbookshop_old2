@@ -1,0 +1,42 @@
+
+/*.bg{
+	background: url('..//images/Newspaper_publishing_Prepress_Workflow_OneVision940x310.jpg');
+	width: 100%;
+	height: 100vh;
+
+}
+
+.bg{
+	background-image:url('..//images/np14.png');
+	background-repeat: no-repeat;
+	
+	width: 100%
+	height:100vh;
+
+	
+}*/
+.user{
+	border: 0px  solid #fff;
+	padding: 50px 60px;
+	margin-top: 20vh;
+	background-color: #ffffff;
+	/*-webkit-box-shadow: -1px 4px 26px 11px rgba(0,0,0,0.75);
+	-moz-box-shadow:-1px 4px 26px 11px rgba(0,0,0,0.75);
+	-box-shadow: -1px 4px 26px 11px rgba(0,0,0,0.75);
+	color: 	#C0C0C0 ;	/*#C5B358;*/
+}
+/*.backgroundimage{
+	background-image: url('..//images/np8.jpg');
+	background-size: cover;
+	background-size: center center;
+	background-repeat: no-repeat;
+	height: 100vh;
+	width: 110%;
+}
+.reg{
+	border: 10px  ;
+	padding: 50px 60px;
+	margin-top: 10vh;
+	
+}*/
+
