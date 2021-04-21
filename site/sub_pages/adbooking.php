@@ -403,7 +403,7 @@ $("#imgupbr").change(function(){
 function calculate_total_price(){ 
   $per_word = 25;  
   $vat = 15; // %
-  $full_page = 175000;
+  $full_page = 175000; // full page price
   $box = 25000;
   $full = 225000;
   $word_count= $("#txt_wc").val();  //word count
@@ -412,8 +412,15 @@ function calculate_total_price(){
   if($word_count < 16){ //if word less than 15
     $price = 1500;
   }else{
-    $extra_word = $word_count-15
+    $extra_word = $word_count-15;
     $price = 1500 + ($per_word * $extra_word);
+  }
+
+  $newspaper_type=$("#txt_npadmode").val();
+  if($newspaper_type=="5"){
+    $price = $full_page;
+  }else if($newspaper_type=="3"){
+    $price = $box;
   }
   
 
@@ -460,6 +467,62 @@ $("#txt_npadmode").change(function(){
     $("#imgad").removeAttr("required"); //remove required attributes
     $("#imgupbr").removeAttr("required"); //remove required attribute
   }
+
+  if($mode_id){
+
+    //size change with mode of advertisments
+    url = "lib/mod_ad_booking.php?type=getAdSize";
+
+    $.ajax({
+      method:"POST",  
+      url:url,
+      data:{mode_id:$mode_id},
+      dataType:"text",
+      success:function (result) {
+        $("#txt_npadsize").html(result);
+      },
+      error:function (etxt) {
+        console.log(etxt);
+      }
+
+    });
+
+    //category add change with mode of advertisments
+    url2 = "lib/mod_ad_booking.php?type=getAdCategories";
+
+    $.ajax({
+      method:"POST",  
+      url:url2,
+      data:{mode_id:$mode_id},
+      dataType:"text",
+      success:function (result) {
+        $("#txt_npadcat").html(result);
+      },
+      error:function (etxt) {
+        console.log(etxt);
+      }
+
+    });
+    
+    //Description Add change with mode of advertisments
+    url2 = "lib/mod_ad_booking.php?type=getAdCatDescription";
+    var newsac_id = $("#txt_npadcat").val();
+    $.ajax({
+      method:"POST",  
+      url:url2,
+      data:{mode_id:$mode_id,newsac_id:newsac_id},
+      dataType:"text",
+      success:function (result) {
+        $("#txt_npadcatdes").html(result);
+      },
+      error:function (etxt) {
+        console.log(etxt);
+      }
+
+    });
+      
+  }
+  calculate_total_price();
   
 });
 
@@ -473,7 +536,11 @@ $("#txtaddress").keyup(function(){
   //     return;
   //   }
 
-   calculate_total_price()
+   calculate_total_price();
+});
+
+$("#txt_npadcolour").change(function(){
+  calculate_total_price();
 });
 
 

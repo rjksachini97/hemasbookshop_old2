@@ -17,16 +17,17 @@ require("../lib/mod_np_booking.php");
           {"data":"2"},
           {"data":"3"},
           {"data":"4"},
+          {"data":"5"},
         ],
         "columnDefs":[
 
-        {
-            "data":"5",
-            "render":function(data,type,row){
-              return (data=="1")?"Approved":"Approval Pending";
-            },
-            "targets": 5
-          }, 
+          // {
+          //   "data":"5",
+          //   "render":function(data,type,row){
+          //     return (data=="1")?"Approved":"Approval Pending";
+          //   },
+          //   "targets": 5
+          // }, 
 
           {
             "data":null
@@ -60,133 +61,133 @@ require("../lib/mod_np_booking.php");
         ]
     });
 
-    $("#tblviewnpbkings tbody").on('click','a',function(){
-      var type = $(this).attr('title');
-      var data = dataTable.row($(this).parents('tr')).data();
-      var eid = data[0];
+    // $("#tblviewnpbkings tbody").on('click','a',function(){
+    //   var type = $(this).attr('title');
+    //   var data = dataTable.row($(this).parents('tr')).data();
+    //   var eid = data[0];
 
-      if(type=="Cancel_Booking"){
-        swal({
-            title:"Do you want to Cancel this Booking?",
-            text:"You are trying to Cancel this Booking :"+eid,
-            icon:"warning",
-            buttons:true,
-            dangerMode:true
-          }).then((willDelete)=>{
-            if(willDelete){
-              var url = "lib/mod_np_booking.php?type=deletebooking";
-              $.ajax({
-                method:"POST",
-                url:url,
-                data:{booking_id:eid},
-                dataType:"text",
-                success:function(result){
-                  if(result == 1){
-                    swal('Success', 'Succesfully removed', 'success');
-                    dataTable.row($(this).parents('tr')).remove().draw();
-                  }else{
-                    swal('Error', 'Some problem occured in the system', 'error');
-                  }
-                },
-                error:function(eobj,etxt,err){
-                  console.log(etxt);
-                }
-              });
-            }
-          });
-      }else if(type=="View_details"){
-        var url = "lib/mod_np_booking.php?type=viewBookingDetails";
-         $.ajax({
-            method:"POST",
-            url:url,
-            data:{booking_id:eid},
-            dataType:"text",
-            success:function(result){
-              $("#view-booking-details").html(result);
-            },
-            error:function(eobj,etxt,err){
-              console.log(etxt);
-            }
-          });
+    //   if(type=="Cancel_Booking"){
+    //     swal({
+    //         title:"Do you want to Cancel this Booking?",
+    //         text:"You are trying to Cancel this Booking :"+eid,
+    //         icon:"warning",
+    //         buttons:true,
+    //         dangerMode:true
+    //       }).then((willDelete)=>{
+    //         if(willDelete){
+    //           var url = "lib/mod_np_booking.php?type=deletebooking";
+    //           $.ajax({
+    //             method:"POST",
+    //             url:url,
+    //             data:{booking_id:eid},
+    //             dataType:"text",
+    //             success:function(result){
+    //               if(result == 1){
+    //                 swal('Success', 'Succesfully removed', 'success');
+    //                 dataTable.row($(this).parents('tr')).remove().draw();
+    //               }else{
+    //                 swal('Error', 'Some problem occured in the system', 'error');
+    //               }
+    //             },
+    //             error:function(eobj,etxt,err){
+    //               console.log(etxt);
+    //             }
+    //           });
+    //         }
+    //       });
+    //   }else if(type=="View_details"){
+    //     var url = "lib/mod_np_booking.php?type=viewBookingDetails";
+    //      $.ajax({
+    //         method:"POST",
+    //         url:url,
+    //         data:{booking_id:eid},
+    //         dataType:"text",
+    //         success:function(result){
+    //           $("#view-booking-details").html(result);
+    //         },
+    //         error:function(eobj,etxt,err){
+    //           console.log(etxt);
+    //         }
+    //       });
 
- 		}else if(type=="Open_Slip"){
-        var url = "lib/mod_booking.php?type=viewSlip";
-         $.ajax({
-            method:"POST",
-            url:url,
-            data:{booking_id:eid},
-            dataType:"text",
-            success:function(result){
-              $("#viewSlip").html(result);
-            },
-            error:function(eobj,etxt,err){
-              console.log(etxt);
-            }
-          });
-    }else if(type=="Full_payment"){
-        swal({
-            title:"Do you want to Approve this Booking?",
-            text:"You are trying to Approve this Booking :"+eid,
-            icon:"warning",
-            buttons:true,
-            dangerMode:true
-          }).then((willDelete)=>{
-            if(willDelete){
-              var url = "lib/mod_np_booking.php?type=confirmBooking";
-             $.ajax({
-                method:"POST",
-                url:url,
-                data:{booking_id:eid},
-                dataType:"text",
-                success:function(result){
+ 		// }else if(type=="Open_Slip"){
+    //     var url = "lib/mod_booking.php?type=viewSlip";
+    //      $.ajax({
+    //         method:"POST",
+    //         url:url,
+    //         data:{booking_id:eid},
+    //         dataType:"text",
+    //         success:function(result){
+    //           $("#viewSlip").html(result);
+    //         },
+    //         error:function(eobj,etxt,err){
+    //           console.log(etxt);
+    //         }
+    //       });
+    // }else if(type=="Full_payment"){
+    //     swal({
+    //         title:"Do you want to Approve this Booking?",
+    //         text:"You are trying to Approve this Booking :"+eid,
+    //         icon:"warning",
+    //         buttons:true,
+    //         dangerMode:true
+    //       }).then((willDelete)=>{
+    //         if(willDelete){
+    //           var url = "lib/mod_np_booking.php?type=confirmBooking";
+    //          $.ajax({
+    //             method:"POST",
+    //             url:url,
+    //             data:{booking_id:eid},
+    //             dataType:"text",
+    //             success:function(result){
 
-                  if(result == 1){
-                    swal("Approved", "Booking has been approved", "success")
-                    dataTable.row($(this).parents('tr')).draw();
-                  }else{
-                    swal("Error!", "Some problem occured in the system", "error")
-                  }
-                },
-                error:function(eobj,etxt,err){
-                  console.log(etxt);
-                }
-              });
-            }
-          });
+    //               if(result == 1){
+    //                 swal("Approved", "Booking has been approved", "success")
+    //                 dataTable.row($(this).parents('tr')).draw();
+    //               }else{
+    //                 swal("Error!", "Some problem occured in the system", "error")
+    //               }
+    //             },
+    //             error:function(eobj,etxt,err){
+    //               console.log(etxt);
+    //             }
+    //           });
+    //         }
+    //       });
         
-      }else if(type=="Full_payment"){
-        swal({
-            title:"Fully paid?",
-            text:"You are trying to Approve for Full payment :"+eid,
-            icon:"warning",
-            buttons:true,
-            dangerMode:true
-          }).then((willDelete)=>{
-            if(willDelete){
-              var url = "lib/mod_np_booking.php?type=confirmfullpayment";
-             $.ajax({
-                method:"POST",
-                url:url,
-                data:{booking_id:eid},
-                dataType:"text",
-                success:function(result){
-                  if(result == 1){
-                    swal("Full paid", "Full payment has been approved", "success")
-                    dataTable.row($(this).parents('tr')).draw();
-                  }else{
-                    swal("Error!", "Some problem occured in the system", "error")
-                  }
-                },
-                error:function(eobj,etxt,err){
-                  console.log(etxt);
-                }
-              });
-            }
-          });
+    //   }else if(type=="Full_payment"){
+    //     swal({
+    //         title:"Fully paid?",
+    //         text:"You are trying to Approve for Full payment :"+eid,
+    //         icon:"warning",
+    //         buttons:true,
+    //         dangerMode:true
+    //       }).then((willDelete)=>{
+    //         if(willDelete){
+    //           var url = "lib/mod_np_booking.php?type=confirmfullpayment";
+    //          $.ajax({
+    //             method:"POST",
+    //             url:url,
+    //             data:{booking_id:eid},
+    //             dataType:"text",
+    //             success:function(result){
+    //               if(result == 1){
+    //                 swal("Full paid", "Full payment has been approved", "success")
+    //                 dataTable.row($(this).parents('tr')).draw();
+    //               }else{
+    //                 swal("Error!", "Some problem occured in the system", "error")
+    //               }
+    //             },
+    //             error:function(eobj,etxt,err){
+    //               console.log(etxt);
+    //             }
+    //           });
+    //         }
+    //       });
         
-      }
-    });
-    });
+    //   }
+    // });
+    // });
 </script>
 
 <!-- Breadcrumbs-->

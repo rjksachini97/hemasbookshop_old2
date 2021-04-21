@@ -110,10 +110,27 @@ function getNewspaperCategories(){
   $dbobj->close(); 
 }
 
+
 function getAdCategories(){
   $dbobj = DB::connect(); 
-  $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1;";
-
+  if(isset($_POST['mode_id'])){
+    $mode_id = $_POST['mode_id'];
+    if($mode_id=="5"){
+      $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1 and newsac_id='ACAT0005';";
+    }else if($mode_id=="1"){
+      $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1 and newsac_id !='ACAT0005';";
+    }else if($mode_id=="2"){
+      $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1 and newsac_id !='ACAT0004' and newsac_id !='ACAT0005';";
+    }else if($mode_id=="3"){
+      $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1 and newsac_id !='ACAT0004' and newsac_id !='ACAT0005';";
+    }else if($mode_id=="4"){
+      $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1 and newsac_id='ACAT0004';";
+    }else{
+      $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1;";
+    }
+  }else{
+    $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1;";
+  }
   $result = $dbobj->query($sql);
 
   if($dbobj->errno){
@@ -130,11 +147,21 @@ function getAdCategories(){
   $dbobj->close(); 
 }
 
+
 function getAdCatDescription(){ 
   $newsac_id = $_POST["newsac_id"];
   $dbobj = DB::connect();
-  
-   $sql = "SELECT adcattype_id,adcattype_desc FROM tbl_news_adcat_type WHERE newsac_id='$newsac_id'";
+  if(isset($_POST['mode_id'])){
+    if($_POST['mode_id']=="5"){
+      $sql = "SELECT adcattype_id,adcattype_desc FROM tbl_news_adcat_type WHERE adcattype_id='ADCT0169';";
+    }else if($_POST['mode_id']=="4"){
+      $sql = "SELECT adcattype_id,adcattype_desc FROM tbl_news_adcat_type WHERE adcattype_id='ADCT0166' OR adcattype_id='ADCT0167';";
+    }else{
+      $sql = "SELECT adcattype_id,adcattype_desc FROM tbl_news_adcat_type ";
+    }
+  }else{
+    $sql = "SELECT adcattype_id,adcattype_desc FROM tbl_news_adcat_type WHERE newsac_id='$newsac_id'";
+  }
     $result = $dbobj->query($sql);
 
     if($dbobj->errno){
@@ -145,14 +172,35 @@ function getAdCatDescription(){
     while($row =$result->fetch_assoc()){
         $output .="<option value='".$row['adcattype_id']."'>".$row['adcattype_desc']."</option>";
     }
-    $out="<option value=''>Select Ad Category Description</option>";
+    if(!isset($_POST['mode_id'])){
+      $out="<option value=''>Select Ad Category Description</option>";
+    }
     echo($out.$output);
     $dbobj->close();
 }
 
 function getAdSize(){
+  
   $dbobj = DB::connect(); 
-  $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1;";
+  if(isset($_POST['mode_id'])){
+    $mode_id = $_POST['mode_id'];
+    if($mode_id=="5"){
+      $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1 and admode_details_id=3 ;";
+    }else if($mode_id=="1"){
+      $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1 and admode_details_id=1 ;";
+    }else if($mode_id=="2"){
+      $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1 and admode_details_id=2 ;";
+    }else if($mode_id=="3"){
+      $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1 and admode_details_id=2 ;";
+    }else if($mode_id=="4"){
+      $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1 and admode_details_id=1 ;";
+    }else{
+      $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1;";
+    } 
+  }else{
+    $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1;";
+  }
+  
 
   $result = $dbobj->query($sql);
 

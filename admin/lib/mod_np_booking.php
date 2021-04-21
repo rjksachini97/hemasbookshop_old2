@@ -17,7 +17,7 @@ $dbobj->close();
 function viewnpbooking(){
 
 	$table = <<<EOT
- 		(SELECT book.np_book_id,cus.cus_id,np.newsp_name,book.np_book_qty,book.np_order_time,book.current_date,book.order_date,book.np_tot_price,book.np_pay_status,book.np_book_status 
+ 		(SELECT book.np_book_id,cus.cus_id,np.newsp_name,book.np_book_qty,book.np_order_time,book.crnt_date,book.order_date,book.np_tot_price,book.np_pay_status,book.np_book_status 
  		FROM tbl_newspaper_booking book
 		JOIN tbl_reg_customer cus ON book.cus_id = cus.cus_id
 		JOIN tbl_newspaper np ON book.newsp_id = np.newsp_id WHERE
