@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once("dbconnection.php"); 
 
 if(isset($_GET["type"])){ 
@@ -269,7 +269,8 @@ function addNewsPaperBooking(){
   
   
   
-  $sql_order = "INSERT INTO tbl_newspaper_booking_details (cus_id,crnt_date,total_qty,total_price,npbook_status) VALUES ('$cus_id','$crnt_date','$total_qty','$total_price','$status')";
+  $sql_order = "INSERT INTO tbl_newspaper_booking_details (cus_id,crnt_date,total_qty,total_price,
+  npbook_status) VALUES ('$cus_id','$crnt_date','$total_qty','$total_price','$status')";
 
   $stmt_order =$dbobj->prepare($sql_order);
   if(!$stmt_order->execute()){
@@ -283,9 +284,11 @@ function addNewsPaperBooking(){
 
           // $nodays = $nodays[$i]." days";
           // $warrenty =date("Y-m-d", strtotime($inv_date. $nodays)); //warrenty expire date
-          $sql_prod = "INSERT INTO tbl_newspaper_booking (cus_id,npbook_details_id,newsp_name,np_book_qty,np_order_time,crnt_date,order_date,np_tot_price,np_book_status) VALUES (?,?,?,?,?,?,?,?,?)";
+          $sql_prod = "INSERT INTO tbl_newspaper_booking (cus_id,npbook_details_id,newsp_id,np_book_qty,
+          np_order_time,crnt_date,order_date,np_tot_price,np_book_status) VALUES (?,?,?,?,?,?,?,?,?)";
           $stmt_prod =$dbobj->prepare($sql_prod);
-          $stmt_prod->bind_param("iisisssdi",$cus_id,$npbook_details_id,$newsp_id[$i],$np_book_qty[$i],$inv_time,$crnt_date,$order_date[$i],$np_tot_price[$i],$status);
+          $stmt_prod->bind_param("iisisssdi",$cus_id,$npbook_details_id,$newsp_id[$i],$np_book_qty[$i],
+          $inv_time,$crnt_date,$order_date[$i],$np_tot_price[$i],$status);
           if(!$stmt_prod->execute()){
                echo ("0,SQL Error ".$stmt_prod->error);
           }
@@ -300,9 +303,11 @@ function addNewsPaperBooking(){
       //         }
         $inv_type="online";
         $inv_id = getInvId();
-        $sql_inv ="INSERT INTO tbl_invoice (inv_id,cus_id,inv_date,inv_qty,inv_total,inv_type,inv_status) VALUES (?,?,?,?,?,?,?)";
+        $sql_inv ="INSERT INTO tbl_invoice (inv_id,cus_id,inv_date,inv_qty,inv_total,inv_type,inv_status) 
+        VALUES (?,?,?,?,?,?,?)";
         $result_inv = $dbobj->prepare($sql_inv);
-        $result_inv->bind_param("sisidsi",$inv_id,$cus_id,$crnt_date,$total_qty,$total_price,$inv_type,$status);
+        $result_inv->bind_param("sisidsi",$inv_id,$cus_id,$crnt_date,$total_qty,$total_price,$inv_type,
+        $status);
         if(!$result_inv->execute()){
           echo ("0,SQL Error ".$result_inv->error);
             exit;    
