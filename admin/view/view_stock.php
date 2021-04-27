@@ -96,6 +96,8 @@ require ("../lib/common.php");
                 </div>
               </div>
             </div>
+          </div>
+
 
 
 
@@ -160,7 +162,7 @@ require ("../lib/common.php");
             </form>
         </div>
     </div>
-</div>
+</div> 
 
 <script>
     $(document).ready(function() {
@@ -249,8 +251,9 @@ require ("../lib/common.php");
                     }else{
                         swal("success",res[1],"success");
                         setTimeout(function() {
-                            funViewStock();
+                            $("#lnkviewstock").click();
                         }, 300);
+
                         
                     }
                    
