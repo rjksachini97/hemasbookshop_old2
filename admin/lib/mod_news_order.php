@@ -8,7 +8,8 @@ if(isset($_GET["type"])){
 function viewNPOrders(){
 
 	$table = <<<EOT
-				( SELECT od.order_id,cus.cus_name,od.order_date,od.order_comp_date,od.order_price,od.order_status
+				( SELECT od.order_id,cus.cus_name,od.order_date,od.order_comp_date,
+				od.order_price,od.order_status
 					FROM tbl_newspaper_order od 
 					JOIN tbl_reg_customer cus ON od.cus_id = cus.cus_id WHERE
 					od.order_status=1 ORDER  BY order_id
