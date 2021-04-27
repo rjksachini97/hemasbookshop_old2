@@ -99,9 +99,9 @@ $resad = $dbobj->query($sqlad);
   <!-- #header --> 
 <section id="services" class="section-bg" style="padding-top: 150px;">
   <div class="container">
-  <table style="width:100%;" align="center">
+  <table style="width:80%;" align="center">
   <tr>
-    <th><button class="btn btn-success" id="profile-btn">Profile</button></th> 
+    <th style="width:20%;"><button class="btn btn-success" id="profile-btn">Profile</button></th> 
     <th><button class="btn btn-success" id="npbookings-btn">My Newspaper Bookings</button></th>
     <th><button class="btn btn-success" id="adbookings-btn">My Advertisment Bookings</button></th>
   </tr>  
@@ -159,26 +159,29 @@ $resad = $dbobj->query($sqlad);
           <legend>Newspaper Booking Infomation</legend>
               <table class="table table-hover">
                 <thead>
-                  <tr>
+                  <tr class="bg-info font-weight-bold" 
+                    style="text-align:center;color:white;border-radius:30px;">
                     <th scope="col">#</th>
                     <th scope="col">Booking Date</th>
-                    <th scope="col">Newspaper</th>
+                   <!-- <th scope="col">Newspaper</th> -->
                     <th scope="col">Quantity</th>
                     <th scope="col">Total Price</th>
                     <th scope="col">Payment Slip</th>
                     <th scope="col">Slip approve Status</th>
                     <th scope="col">Full payment Status</th>
+                    <th scope="col">View Details</th>
+
 
 
                   </tr>
                 </thead>
                 <tbody>
                   
-                  <tr>
+                <!--  <tr>
                     <td colspan="8" class="bg-info font-weight-bold" style="text-align:center;color:white;border-radius:30px;">
                       Newspaper Bookings
                     </td>
-                  </tr>
+                  </tr>  -->
 
                   <?php 
                     $sql_npbking = "SELECT np.newsp_id,np.newsp_name,cus.cus_id,npb.np_book_id,npb.np_book_qty,
@@ -197,9 +200,9 @@ $resad = $dbobj->query($sqlad);
                      <tr>
                       <td ><?php echo $i; ?></td>
                       <td ><?php echo $npbking['order_date'] ?> </td>
-                      <td ><?php echo $npbking['newsp_name'] ?> </td>
+                    <!--  <td ><?php //echo $npbking['newsp_name'] ?> </td>  -->
                       <td ><?php echo $npbking['np_book_qty'] ?> </td>
-                      <th ><?php echo $npbking['np_tot_price'] ?> </td> 
+                      <td ><?php echo $npbking['np_tot_price'] ?> </td> 
                        <th >
                         <?php
                           if($npbking['np_slip_img'] == ""){
@@ -228,7 +231,9 @@ $resad = $dbobj->query($sqlad);
                                 echo "Approval Pending";
                               } ?>
                                 
-                              </th>    
+                              </th>
+
+                              <th><input type="button" id="btnreg" class="btn btn-success" name="btnreg" value="Register"></th>     
                               
                             </tr>
                           <?php
@@ -245,11 +250,12 @@ $resad = $dbobj->query($sqlad);
 
         <!-- ////////////////////////////////ad Booking infomations///////////////////////////////////// -->
 
-        <fieldset class="for-panel" id="panel-adbookings">
+        <fieldset class="for-panel" style="width: 1250px;" id="panel-adbookings">
           <legend>Advertisment Booking Infomation</legend>
               <table class="table table-hover">
                 <thead>
-                  <tr>
+                  <tr class="bg-info font-weight-bold" 
+                    style="text-align:center;color:white;border-radius:30px;">
                     <th scope="col">#</th>
                     <th scope="col">Booking Date</th>
                     <th scope="col">Mode of Advertisment</th>
@@ -258,6 +264,7 @@ $resad = $dbobj->query($sqlad);
                     <th scope="col">Payment Slip</th>
                     <th scope="col">Slip approve Status</th>
                     <th scope="col">Full payment Status</th>
+                    <th scope="col">View Details</th>
 
 
                   </tr>
@@ -265,22 +272,23 @@ $resad = $dbobj->query($sqlad);
                 <tbody>
                   
 
-                  <tr>
+                <!--  <tr>
                     <td colspan="8" class="bg-info font-weight-bold" 
                     style="text-align:center;color:white;border-radius:30px;">
                       Advertisment Bookings
                     </td>
-                  </tr>
-            <?php 
+                  </tr>  -->            
+
+                  <?php 
               $sql_bking = "SELECT adb.ad_book_id,adb.adpub_date,adb.ad_tot_price,adb.ad_img_slip,adb.ad_pay_status,
-              adb.ad_book_status,cus.cus_id,adm.newsad_mode_id,np.newsp_name FROM tbl_ad_booking adb
-              JOIN tbl_newspaper np ON np.newsp_id = adb.ad_book_id
-              JOIN tbl_news_ad_mode adm ON adm.newsad_mode_id = adb.ad_book_id
-              JOIN tbl_reg_customer cus ON cus.cus_id = cus.cus_id
+              adb.ad_book_status,cus.cus_id,adm.newsad_mode,np.newsp_name FROM tbl_ad_booking adb
+              JOIN tbl_newspaper np ON np.newsp_id = adb.newsp_id
+              JOIN tbl_news_ad_mode adm ON adm.newsad_mode_id = adb.newsad_mode_id
+              JOIN tbl_reg_customer cus ON cus.cus_id = adb.cus_id
               WHERE adb.ad_book_status=0 AND adb.ad_pay_status=0 AND adb.cus_id = '$cus_id'"; 
                 $result_bking = $dbobj->query($sql_bking);
                   $i=1;
-                  //$totalPrice = 0;
+                  $totalPrice = 0;
                   while ($bking= $result_bking->fetch_assoc()) {
                    $totalPrice += $bking['ad_tot_price'];
                    $ad_book_id=$bking['ad_book_id'];
@@ -290,7 +298,7 @@ $resad = $dbobj->query($sqlad);
                       <td ><?php echo $bking['adpub_date'] ?> </td>
                       <td ><?php echo $bking['newsad_mode'] ?> </td>
                       <td ><?php echo $bking['newsp_name'] ?> </td>
-                     <th ><?php echo $bking['ad_tot_price'] ?> </td> 
+                     <td ><?php echo $bking['ad_tot_price'] ?> </td> 
                       <th ><?php
                          if($bking['ad_img_slip'] == ""){
                         ?>
@@ -304,6 +312,7 @@ $resad = $dbobj->query($sqlad);
                       }
                         ?>
                        </th>
+                       
                         <th scope="col"><?php if($bking['ad_book_status'] == 1){
                                 echo "Approved";
                               }else{
@@ -314,9 +323,11 @@ $resad = $dbobj->query($sqlad);
                                 echo "Approved";
                               }else{
                                 echo "Approval Pending";
-                              } ?></th>     
+                              } ?></th>
+
+                        <th><input type="button" id="btnreg" class="btn btn-warning" name="btnreg" value="Details"></th>     
                               
-                            </tr>
+                        </tr>
                           <?php
                           $i++;
                       }
