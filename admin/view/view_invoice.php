@@ -1,4 +1,4 @@
-<?php  
+<?php   
 session_start();
 require ("../lib/mod_invoice.php");
 
@@ -34,10 +34,10 @@ require ("../lib/mod_invoice.php");
         </tbody>
 
     </table>
-    <div><input type="text" name="id" id="id" value="<?php echo($emp_id) ?>" style="display: none"></div>
+    
 </div>
 
-<!---------------------------add more payments ---------------------->
+<!----------------------------add more payments ---------------------->
 
 <div class="modal  fade" id="newPayment" tabindex="-1" role="alertdialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog " role="document">
@@ -59,7 +59,7 @@ require ("../lib/mod_invoice.php");
                     </div>
                     <div class="form-group row">
                         <label for="" class="col-lg-4 col-form-label">Customer Name</label>
-                        <input type="text" class="col-lg-5 form-control form-control-plaintext" id="cus_fname" name="cus_fname" readonly="readonly" value="">
+                        <input type="text" class="col-lg-5 form-control form-control-plaintext" id="cus_name" name="cus_name" readonly="readonly" value="">
 
                     </div>               
                     <div class="form-group row">
@@ -129,9 +129,9 @@ $(document).ready(function(){
             }
 
         ]
-    });
+    }); 
 
- /*   $("#tblviewinv tbody").on('click','button',function () {
+  $("#tblviewinv tbody").on('click','button',function () {
        var type = $(this).attr('id');
        var data = dataTable.row($(this).parents('tr')).data();
        var inv_id = data[0];
@@ -142,21 +142,18 @@ $(document).ready(function(){
        
 
        if(type == "inv_detail"){
-           url ="view/view_inv_details.php?inv_id="+inv_id+"&cus="+cus+"&date="+date;
+           url ="view/view_invoice_details.php?inv_id="+inv_id+"&cus="+cus+"&date="+date;
            $("#rpanel").load(url);
        }else if( type=="add_pay"){
                 $("#inv_id").val(inv_id);
-                $("#cus_fname").val(cus);
+                $("#cus_name").val(cus);
                 $("#net_total").val(total);
                 var rem = parseFloat(parseFloat(total)-parseFloat(paid)).toFixed(2);
                 $("#rem_amount").val(rem)
             $("#newPayment").modal('show');
-       }else if(type == "btn_grn_print"){
-            
-            window.open('view/report/print_invoicePDF.php?invid='+inv_id,'_blank');
        }
     });
-*/
+
     $("#btn_confirm").click(function(){
         var data = $("#newpayForm").serialize();
         var url  ="lib/mod_invoice.php?type=addPayments";
@@ -186,3 +183,4 @@ $(document).ready(function(){
 
 
 </script>
+
