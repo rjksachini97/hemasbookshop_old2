@@ -49,7 +49,7 @@ require("../lib/mod_np_booking.php");
         //     "targets": 8
         //   },
     
-          {
+        /*  {
             "data":null,
             "defaultContent": "<a href='#' title='View_details' data-toggle='modal' data-target='#viewdetails'><i class='fas fa-list-alt'></i></a>",
             "targets": 7
@@ -58,13 +58,26 @@ require("../lib/mod_np_booking.php");
             "data":null,
             "defaultContent": "<a href='#' title='Cancel_Booking'><i style='color:red' class='fas fa-window-close'></i></a>",
             "targets": 8
-          },
+          },*/
+
+
+            {
+                "data":null,
+                "defaultContent":"<button class='btn btn-primary btn-sm' title='View_details' data-toggle='modal' data-target='#viewdetails' >Details</button>",
+                "targets":7
+            },
+
+            {
+                "data":null,
+                "defaultContent":"<button class='btn btn-danger btn-sm' title='Cancel_Booking'  >Cancel</button>",
+                "targets":8
+            }
         ]
     });
 
    
 
-    $("#tblviewnpbkings tbody").on('click','a',function(){
+    $("#tblviewnpbkings tbody").on('click','button',function(){
       var type = $(this).attr('title');
       var data = dataTable.row($(this).parents('tr')).data();
       var eid = data[0];
@@ -113,7 +126,7 @@ require("../lib/mod_np_booking.php");
             }
           });
 
- 		}else if(type=="Open_Slip"){
+ 		}/*else if(type=="Open_Slip"){
         var url = "lib/mod_booking.php?type=viewSlip";
          $.ajax({
             method:"POST",
@@ -127,7 +140,8 @@ require("../lib/mod_np_booking.php");
               console.log(etxt);
             }
           });
-    }else if(type=="confirm_booking"){
+    }*/
+    else if(type=="confirm_booking"){
         swal({
             title:"Do you want to Approve this Booking?",
             text:"You are trying to Approve this Booking :"+eid,
@@ -208,7 +222,7 @@ require("../lib/mod_np_booking.php");
   <thead>
     <tr>
       <th>Booking ID</th>
-      <th>Customer ID</th>
+      <th>Customer Name</th>
       <th>News paper</th>
       <th>Qty</th>
       <th>Total Price</th>
@@ -254,7 +268,7 @@ require("../lib/mod_np_booking.php");
 
 
                         <!-- View Bank Slip Modal -->
-            <div class="modal fade" id="viewSlip" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--            <div class="modal fade" id="viewSlip" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -273,3 +287,4 @@ require("../lib/mod_np_booking.php");
                 </div>
               </div>
             </div>
+-->
