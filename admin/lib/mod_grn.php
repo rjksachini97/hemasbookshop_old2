@@ -1,5 +1,5 @@
 <?php  
-require_once("config.php");  
+require_once("dbconnection.php");  
 if(isset($_GET["type"])){
     $type = $_GET["type"];
     $type();
