@@ -1,4 +1,4 @@
-<?php
+<?php 
 require ("../lib/mod_invoice.php");
 require ("../lib/mod_customer.php");   
 $cus_id = getCusId();
@@ -506,7 +506,7 @@ if(isset($_SESSION["user"]["uid"])){
             $("#cus_mobile").prop('readonly',"");
         });
 
-        /*---------------------- function for remove --------------------------   */
+        /*----------------------- function for remove --------------------------   */
 
         $("#inv_content").on("click",".remove",function(){ // after load page if click remove run function
 
@@ -552,7 +552,7 @@ if(isset($_SESSION["user"]["uid"])){
             var date = $("#inv_date").val();
             var ncus_email =$("#ncus_email").val();
             var ncus_name =$("#ncus_name").val();
-            var ncus_lname =$("#ncus_address").val();
+            var ncus_address =$("#ncus_address").val();
             var ncus_mobile =$("#ncus_mobile").val();
 
             var newspid =$("#newspid").val();
@@ -577,7 +577,7 @@ if(isset($_SESSION["user"]["uid"])){
                     else if(msg=="1"){
                         swal("Success",res[1],"success");
                         setTimeout(function() {
-                            $("#lnknewinvoice").click();
+                            $("#lnknewinvoice");
                         }, 300);
                     }
                 }
