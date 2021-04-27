@@ -1,4 +1,4 @@
-<?php   
+<?php     
 require_once("dbconnection.php");
 date_default_timezone_set("Asia/Colombo");
 
@@ -33,7 +33,7 @@ function getPayId(){
     $dbobj = DB::connect();
 
     
-    $sql = "SELECT count(pay_id) FROM tbl_payment;";
+    $sql = "SELECT count(npbookpay_id) FROM tbl_np_booking_pay;";
 
     $result = $dbobj->query($sql);
 
@@ -98,7 +98,7 @@ function addNewCustomer(){
 
 function viewInvoice(){
     $table = <<<EOT
-    ( SELECT inv.*, cus.cus_name FROM tbl_invoice inv JOIN tbl_customers cus ON inv.cus_id= cus.cus_id ORDER BY inv_date ASC
+    ( SELECT inv.*, cus.cus_name FROM tbl_invoice inv JOIN tbl_reg_customer cus ON inv.cus_id= cus.cus_id ORDER BY inv_date ASC
         ) temp
 EOT;
 
@@ -131,6 +131,48 @@ EOT;
     echo json_encode(
         SSP::complex($_POST, $sql_details, $table, $primary_key, $columns)
     );
+}
+
+function viewInvDetails(){
+   $inv_id = $_GET['inv_id'];
+
+    $table = <<<EOT
+    (SELECT inv.*,np.newsp_name FROM tbl_inv_details inv JOIN tbl_newspaper np ON inv.newsp_id=np.newsp_id WHERE inv.inv_id="$inv_id"
+    )temp
+
+EOT;
+
+    $primaryKey ='inv_id';
+
+    $columns = array(
+        array( 'db' => 'newsp_id', 'dt'=> 0),
+        array( 'db' => 'newsp_name', 'dt'=> 1),
+        array( 'db' => 'newsp_cprice', 'dt'=> 2),
+        array( 'db' => 'newsp_qty', 'dt'=> 3),
+        array( 'db' => 'newsp_sprice', 'dt'=> 4)
+
+    );
+    require_once('config.php');
+    $host = Config::$host ;
+    $user = Config::$db_uname ;
+    $pass = Config::$db_pass ;
+    $db = Config::$dbname ;
+
+    $sql_details = array(
+        'user' => $user,
+        'pass' => $pass,
+        'db'   => $db,
+        'host' => $host,
+    );
+
+    require('ssp.class.php');
+
+    echo json_encode(
+        SSP::complex($_POST, $sql_details, $table, $primaryKey, $columns,null )
+    );
+
+
+
 }
 
 /*----------------------get Newspaer details  --------------------------   */
@@ -180,26 +222,109 @@ function addNewInv(){
     $txtntot = $_POST['txtntot']; // invoice total
     $inv_type = "offline";
     $status ="1";
-    
-   
 
+    $payid = getPayId();
+    $paydate = date("Y-m-d");
+    $inv_time = date("H:m:s");
+    
     $dbobj= DB::connect();
 
-    
-    
-    
-    $sql_inv = "INSERT INTO tbl_invoice (inv_id,cus_id,inv_date,inv_qty,inv_discount,inv_total,inv_paid, pay_id,inv_type, inv_status ) VALUES (
+$sql_inv = "INSERT INTO tbl_invoice (inv_id,cus_id,inv_date,inv_qty,inv_discount,inv_total,inv_paid, pay_id,inv_type, inv_status ) VALUES (
     '$inv_id','$cus_id','$inv_date','$totqty','$txtdis','$txtntot','$txtntot','$payid','$inv_type','$status')";
 
     $stmt_inv =$dbobj->prepare($sql_inv);
     if(!$stmt_inv->execute()){
         echo ("0,SQL Error ".$stmt_inv->error);
-        exit();
+        
+    }
+    else{
+        $row = count($tbl_id = $_POST['tbl_id']);
+        for($i=0; $i<$row; $i++){
+
+            $sql_prod = "INSERT INTO tbl_inv_details (inv_id,newsp_id,newsp_cprice,newsp_qty,newsp_sprice) VALUES (
+            '$inv_id','$tbl_id[$i]','$newsp_cprice[$i]','$tbl_qty[$i]','$tbl_sprice[$i])";
+            $stmt_prod =$dbobj->prepare($sql_prod);
+            if(!$stmt_prod->execute()){
+                 echo ("0,SQL Error ".$stmt_prod->error);
+             }else{
+                $res = updateStock($dbobj,$batch_id[$i],$tbl_id[$i],$tbl_qty[$i]);
+                if ($res=="0"){
+                    echo("0,Error on Batch update");
+                    exit;
+                }
+
+             }
+
+        }
+        $sql_pay ="INSERT INTO tbl_np_booking_pay (npbookpay_id,inv_id,pay_amount,pay_date,pay_time,pay_type) VALUES ('$payid','$inv_id','$txtntot','$paydate','$inv_time','$inv_type')";
+                $result_pay = $dbobj->prepare($sql_pay);
+                if(!$result_pay->execute()){
+                    echo ("0,SQL Error ".$result_pay->error);
+                    exit;    
+                }
+        echo("1,Invoice created");
+
     }
     $stmt_inv->close();
     $dbobj->close(); 
 
 }
+
+/*----------------------Update Stock with invoice  --------------------------   */
+
+function updateStock($dbobj,$batch_id,$tbl_id,$tbl_qty){
+    $sql_batch = "UPDATE tbl_batch SET bat_rem=bat_rem-$tbl_qty WHERE bat_id='$batch_id';";
+    $dbobj->query($sql_batch);
+    if($dbobj->errno){
+        return "0";
+    }
+    else{
+        $sql_status = "UPDATE tbl_batch SET bat_status=0 WHERE bat_id='$batch_id' AND bat_rem=0;";
+        $dbobj->query($sql_status);
+
+        $sql_prod = "UPDATE tbl_newspaper SET newsp_qty=newsp_qty-$tbl_qty WHERE newsp_id='$tbl_id';";
+        $dbobj->query($sql_prod);
+        if($dbobj->errno)
+            return "0";
+        else
+            return "1";
+    }
+}
+
+/* --------------  add new Payments --------------*/
+function addPayments(){
+    $invid = $_POST['inv_id'];
+    $cdate = $_POST['cdate'];
+    $ctime =date('H:m:s');
+    $amount = $_POST['pay_amount'];
+    $type = "offline";
+    
+
+    $dbobj = DB::connect();
+    $sql = "INSERT INTO tbl_np_booking_pay (inv_id,pay_amount,pay_date,pay_time,pay_type) VALUES('$invid','$amount','$cdate','$amount','$type')";
+    $stmt = $dbobj->prepare($sql);
+    if($dbobj->errno){
+         echo("SQL Error : ".$dbobj->error );
+         exit;
+     }
+
+    if(!$stmt->execute()){
+        echo("0,Payment was not success");
+    }else{
+               
+        $sql_inv = "UPDATE tbl_invoice SET inv_paid=inv_paid+$amount WHERE inv_id = '$invid';";
+       
+        $dbobj->query($sql_inv);
+
+        if($dbobj->errno){
+            echo("0,Payment was not success");
+        }else{
+            echo("1,Payment Is successfully added");
+        }
+    }
+    $dbobj->close();
+}
+
 
 
 
