@@ -32,10 +32,16 @@ require("../lib/mod_news_order.php");
             "targets": 5
           },
           {
+                "data":null,
+                "defaultContent":"<button class='btn btn-primary btn-sm  ' id='send)delivery' >Delivery</button> <button class='btn btn-success btn-sm  ' id='add_pay' >Send Delivery</button>"+
+                " <button class='btn btn-primary btn-sm' id='btn_view_details'><i class='fas fa-clipboard-list'></i>View Details</button>",
+                "targets":6
+            },
+         /* {
             "data":null,
             "defaultContent":"<a href='#' title='view_orders'><i class='fas fa-2x fa-clipboard-list'></i></a> ",
-            "targets": 6
-          },
+            "targets": 7
+          },*/
         ]
     });
     $("#tblviewnewsorder tbody").on('click','a',function(){ // on command is dynmacally content  a- anker tag
@@ -125,7 +131,7 @@ require("../lib/mod_news_order.php");
       <th></th>
     </tr>
   </thead>
-  <tfoot>
+ <tfoot>
     <tr>
       <th>ID</th>
       <th>Customer Name</th>
@@ -136,7 +142,7 @@ require("../lib/mod_news_order.php");
       <th>Status</th>
       <th></th>
     </tr>
-  </tfoot>
+  </tfoot> 
 </table>
 
 <!--view full details model-->
@@ -170,7 +176,8 @@ require("../lib/mod_news_order.php");
 
 <!--  --------------Send Delivery Note------------- -->
 
-<div class="modal fade" id="sendDelivery" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="sendDelivery" tabindex="-1" role="dialog" 
+aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <form id="formSendemail"> 
@@ -217,7 +224,8 @@ require("../lib/mod_news_order.php");
                 </div>
             </div>
             <div class="modal-footer">
-                <img src="../resources/img/page-loading.gif" class="d-none" id="load_imag" width='100px'>
+                <img src="../resources/img/page-loading.gif" class="d-none" id="load_imag" 
+                width='100px'>
                 <button type="button" class="btn btn-success"  id="modal_reply_send"> Send</button>
 
             </div>
