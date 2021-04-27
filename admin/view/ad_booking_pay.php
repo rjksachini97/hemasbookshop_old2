@@ -1,4 +1,4 @@
- <?php  
+ <?php   
 require("../lib/mod_booking_pay.php");
 ?>
 <script>
@@ -43,11 +43,17 @@ require("../lib/mod_booking_pay.php");
           },
 
         
-		 {
+		    /* {
             "data":null,
             "defaultContent": "<a href='#' title='View_details' data-toggle='modal' data-target='#viewdetails'><i class='fas fa-list-alt'></i></a>",
             "targets": 6
-          },
+          },*/
+
+            {
+                "data":null,
+                "defaultContent":"<button class='btn btn-primary btn-sm' title='View_details' data-toggle='modal' data-target='#viewdetails' >Details</button>",
+                "targets":6
+            },
          
         ]
     });
@@ -196,6 +202,37 @@ require("../lib/mod_booking_pay.php");
     </tr>
   </tfoot>
 </table>
+
+ <!-- View full details Modal -->
+            <div class="modal fade" id="viewdetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Booking Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="container">
+                      <div class="row">
+                          <div class="col-sm-6">
+                            <div class="form-horizontal" id="view-booking-details">    
+                                                   
+                            </div>
+                          </div>
+                          
+                        </div>
+
+
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
 
             <!-- View Bank Slip Modal -->
