@@ -181,10 +181,12 @@ $resad = $dbobj->query($sqlad);
                   </tr>
 
                   <?php 
-                    $sql_npbking = "SELECT np.newsp_id,np.newsp_name,cus.cus_id,npb.np_book_id,npb.np_book_qty,npb.order_date,npb.np_tot_price,npb.np_slip_img,npb.np_pay_status,npb.np_book_status FROM tbl_newspaper_booking npb
-JOIN tbl_newspaper np ON np.newsp_id = npb.newsp_id
-JOIN tbl_reg_customer cus ON cus.cus_id = npb.cus_id
-WHERE npb.np_book_status=0 AND npb.np_pay_status=0 AND npb.cus_id = '$cus_id'"; 
+                    $sql_npbking = "SELECT np.newsp_id,np.newsp_name,cus.cus_id,npb.np_book_id,npb.np_book_qty,
+                    npb.order_date,npb.np_tot_price,npb.np_slip_img,npb.np_pay_status,npb.np_book_status FROM 
+                    tbl_newspaper_booking npb
+                    JOIN tbl_newspaper np ON np.newsp_id = npb.newsp_id
+                    JOIN tbl_reg_customer cus ON cus.cus_id = npb.cus_id
+                    WHERE npb.np_book_status=0 AND npb.np_pay_status=0 AND npb.cus_id = '$cus_id'"; 
                     $result_npbking = $dbobj->query($sql_npbking);
                     $nptotalPrice = 0;
                     $i=1;
@@ -264,19 +266,21 @@ WHERE npb.np_book_status=0 AND npb.np_pay_status=0 AND npb.cus_id = '$cus_id'";
                   
 
                   <tr>
-                    <td colspan="8" class="bg-info font-weight-bold" style="text-align:center;color:white;border-radius:30px;">
+                    <td colspan="8" class="bg-info font-weight-bold" 
+                    style="text-align:center;color:white;border-radius:30px;">
                       Advertisment Bookings
                     </td>
                   </tr>
             <?php 
-              $sql_bking = "SELECT adm.newsad_mode, np.newsp_name, cus.cus_id, adb.adpub_date,adb.ad_tot_price,adb.ad_img_slip,adb.ad_pay_status,adb.ad_book_status FROM tbl_ad_booking adb
-JOIN tbl_newspaper np ON np.newsp_id=adb.newsp_id
-JOIN tbl_news_ad_mode adm ON adm.newsad_mode_id = adb.newsad_mode_id
-JOIN tbl_reg_customer cus ON cus.cus_id = adb.cus_id
-WHERE adb.ad_pay_status=0 AND adb.ad_book_status=0 AND adb.cus_id = '$cus_id'"; 
+              $sql_bking = "SELECT adb.ad_book_id,adb.adpub_date,adb.ad_tot_price,adb.ad_img_slip,adb.ad_pay_status,
+              adb.ad_book_status,cus.cus_id,adm.newsad_mode_id,np.newsp_name FROM tbl_ad_booking adb
+              JOIN tbl_newspaper np ON np.newsp_id = adb.ad_book_id
+              JOIN tbl_news_ad_mode adm ON adm.newsad_mode_id = adb.ad_book_id
+              JOIN tbl_reg_customer cus ON cus.cus_id = cus.cus_id
+              WHERE adb.ad_book_status=0 AND adb.ad_pay_status=0 AND adb.cus_id = '$cus_id'"; 
                 $result_bking = $dbobj->query($sql_bking);
                   $i=1;
-                  $totalPrice = 0;
+                  //$totalPrice = 0;
                   while ($bking= $result_bking->fetch_assoc()) {
                    $totalPrice += $bking['ad_tot_price'];
                    $ad_book_id=$bking['ad_book_id'];
