@@ -143,7 +143,8 @@ function getNewspaperCategories(){
 
 function getModesofAd(){
   $dbobj = DB::connect(); 
-  $sql = "SELECT newsad_mode_id,newsad_mode FROM tbl_news_ad_mode WHERE newsad_mode_id NOT IN (SELECT newsa_id FROM tbl_newspaper_ad) AND newsad_mode_status=1;";
+  $sql = "SELECT newsad_mode_id,newsad_mode FROM tbl_news_ad_mode WHERE newsad_mode_id NOT 
+  IN (SELECT newsa_id FROM tbl_newspaper_ad) AND newsad_mode_status=1;";
 
   $result = $dbobj->query($sql);
 
@@ -203,10 +204,12 @@ function addNewAdvertisment(){
 
   $dbobj = DB::connect();
 
-  $sql = "INSERT INTO tbl_newspaper_ad(newsa_id,pub_id,npcat_id,newsp_id,newsad_mode_id,adcolour_id,newsa_fwc,newsa_fwcprice,newsa_mwcprice) VALUES(?,?,?,?,?,?,?,?,?);";
+  $sql = "INSERT INTO tbl_newspaper_ad(newsa_id,pub_id,npcat_id,newsp_id,newsad_mode_id,
+  adcolour_id,newsa_fwc,newsa_fwcprice,newsa_mwcprice) VALUES(?,?,?,?,?,?,?,?,?);";
 
   $stmt = $dbobj->prepare($sql);
-  $stmt->bind_param("ssssssidd",$newsa_id,$pub_id,$npcat_id,$newsp_id,$newsad_mode_id,$adcolour_id,$newsa_fwc,$newsa_fwcprice,$newsa_mwcprice);
+  $stmt->bind_param("ssssssidd",$newsa_id,$pub_id,$npcat_id,$newsp_id,$newsad_mode_id,
+  $adcolour_id,$newsa_fwc,$newsa_fwcprice,$newsa_mwcprice);
 
   if(!$stmt->execute()){
     echo("0,SQL Error : ".$stmt->error);
