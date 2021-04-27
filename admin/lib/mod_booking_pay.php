@@ -1,4 +1,4 @@
-<?php 
+<?php  
 require_once("dbconnection.php");
 
 if(isset($_GET["type"])){
@@ -44,8 +44,12 @@ function viewadBookingPayDetails(){
 	$booking_id = $_POST['booking_id'];
 	$dbobj=DB::connect();
 
-	$sql = "SELECT * FROM tbl_ad_booking abook, tbl_reg_customer cus 
-			WHERE abook.cus_id=cus.cus_id AND abook.ad_book_id=1='$booking_id';";
+	$sql = "SELECT * FROM tbl_ad_booking book, tbl_newspaper np, tbl_reg_customer cus, tbl_news_ad_mode adm, 
+	tbl_ad_colour cl, tbl_news_ad_category adc, tbl_news_adcat_type act, tbl_ad_modes_details admdet 
+	WHERE book.cus_id=cus.cus_id AND book.newsp_id=np.newsp_id AND book.newsad_mode_id=adm.newsad_mode_id 
+	AND book.adcolour_id=cl.adcolour_id AND book.newsac_id=adc.newsac_id AND 
+	book.adcattype_id=act.adcattype_id AND book.admode_details_id=admdet.admode_details_id AND 
+	book.ad_book_id='$booking_id';";
 
 	$result = $dbobj->query($sql);
 
@@ -181,3 +185,118 @@ function viewnpbookingpay(){
     SSP::complex($_POST, $sql_details, $table, $primaryKey, $columns,null)
 	);
 }
+
+function viewnpBookingPayDetails(){
+	$booking_id = $_POST['booking_id'];
+	$dbobj=DB::connect();
+
+	$sql = "SELECT * FROM tbl_ad_booking book, tbl_newspaper np, tbl_reg_customer cus, tbl_news_ad_mode adm, 
+	tbl_ad_colour cl, tbl_news_ad_category adc, tbl_news_adcat_type act, tbl_ad_modes_details admdet 
+	WHERE book.cus_id=cus.cus_id AND book.newsp_id=np.newsp_id AND book.newsad_mode_id=adm.newsad_mode_id 
+	AND book.adcolour_id=cl.adcolour_id AND book.newsac_id=adc.newsac_id AND 
+	book.adcattype_id=act.adcattype_id AND book.admode_details_id=admdet.admode_details_id AND 
+	book.ad_book_id='$booking_id';";
+
+	$result = $dbobj->query($sql);
+
+	$output = "";
+
+	while($row = $result->fetch_assoc()){
+		$output .= "<label class=\"col-xs-5 control-label\">Booking ID:</label>";
+		$output .= "<p class=\"form-control-static\">" . $row['ad_book_id'] . "</p>";
+
+		$output .= "<label class=\"col-xs-5 control-label\">Customer name : </label>";
+		$output .= "<p class=\"form-control-static\">".$row['cus_name']."</p> ";
+
+		$output .= "<label class=\"col-xs-5 control-label\">Mobile number : </label>";
+		$output .= "<p class=\"form-control-static\">".$row['cus_mobile']."</p> ";
+
+		$output .= "<label class=\"col-xs-5 control-label\">Advertisment Mode : </label>";
+		$output .= "<p class=\"form-control-static\">".$row['newsad_mode']."</p> ";
+
+		$output .= "<label class=\"col-xs-5 control-label\">Advertisment Colour: </label>";
+		$output .= "<p class=\"form-control-static\">".$row['adcolour_name']."</p> ";
+
+		$output .= "<label class=\"col-xs-5 control-label\">Newspaper : </label>";
+		$output .= "<p class=\"form-control-static\">".$row['newsp_name']."</p> ";
+
+		$output .= "<label class=\"col-xs-5 control-label\">Newspaper Ad Category : </label>";
+		$output .= "<p class=\"form-control-static\">".$row['newsac_category']."</p> ";
+
+		$output .= "<label class=\"col-xs-5 control-label\">Newspaper Ad Category Type : </label>";
+		$output .= "<p class=\"form-control-static\">".$row['adcattype_desc']."</p> ";
+
+
+		$output .= "<label class=\"col-xs-5 control-label\">Advertisment Size : </label>";
+		$output .= "<p class=\"form-control-static\">".$row['admode_details_size']."</p> ";
+	
+		$output .= "<label class=\"col-xs-5 control-label\">Booked Date : </label>";
+		$output .= "<p class=\"form-control-static\">".$row['crnt_date']."</p> ";
+
+		$output .= "<label class=\"col-xs-5 control-label\">Publish date : </label>";
+		$output .= "<p class=\"form-control-static\">".$row['adpub_date']."</p> ";
+
+		$output .= "<label class=\"col-xs-5 control-label\">Ad Description : </label>";
+		$output .= "<p class=\"form-control-static\">".$row['ad_description']."</p> ";
+
+		$output .= "<label class=\"col-xs-5 control-label\">Word Count : </label>";
+		$output .= "<p class=\"form-control-static\">".$row['ad_wc']."</p> ";
+
+		$output .= "<label class=\"col-xs-5 control-label\">Total Price : </label>";
+		$output .= "<p class=\"form-control-static\">".$row['ad_tot_price']."</p> ";
+	}
+
+	echo $output;
+}
+
+
+function NpviewSlip(){
+	$np_book_id = $_POST['np_book_id'];
+	$dbobj=DB::connect();
+
+	$sql = "SELECT np_slip_img FROM tbl_newspaper_booking WHERE np_book_id=$np_book_id;";
+
+	$result = $dbobj->query($sql);
+
+	$output = "";
+
+	$row = $result->fetch_assoc();
+	if($row['np_slip_img'] != ""){  //correct  the path
+		$output .= "<img  class='img-thumbnail' src='../../images/Bankslips/NpBooking_slips/" . $row['np_slip_img'] . "' />";
+	}else{
+		$output .="<i>No Image Uploaded!</i>";
+	}
+	echo $output;
+}
+
+/*function confirmnpBooking(){
+	$booking_id = $_POST['booking_id'];
+	$dbobj=DB::connect();
+
+	$sql = "UPDATE tbl_ad_booking SET ad_book_status=1 WHERE ad_book_id=$booking_id";
+
+
+	sendEmail($dbobj,$booking_id);// mail send to customer
+
+	if($dbobj->query($sql)){
+		echo 1;
+	}else{
+		echo 0;
+	}
+}*/
+
+function confirmnpfullpayment(){
+	$booking_id = $_POST['booking_id'];
+	$dbobj=DB::connect();
+
+	$sql = "UPDATE tbl_newspaper_booking SET np_pay_status=1 WHERE np_book_id=$booking_id";
+
+	if($dbobj->query($sql)){
+		echo 1;
+	}else{
+		echo 0;
+	}
+}
+
+
+?>
