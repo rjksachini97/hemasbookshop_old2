@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once("dbconnection.php");
 
 if(isset($_GET["type"])){ 
@@ -39,7 +39,8 @@ function getNewNewsPaperId(){
 
 function getPubCategories(){
   $dbobj = DB::connect(); 
-  $sql = "SELECT pub_id,pub_name FROM tbl_pub_company WHERE pub_id NOT IN (SELECT newsp_id FROM tbl_newspaper) AND pub_status=1;";
+  $sql = "SELECT pub_id,pub_name FROM tbl_pub_company WHERE pub_id 
+  NOT IN (SELECT newsp_id FROM tbl_newspaper) AND pub_status=1;";
 
   $result = $dbobj->query($sql);
 
@@ -59,7 +60,8 @@ function getPubCategories(){
 
 function getCategories(){
   $dbobj = DB::connect(); 
-  $sql = "SELECT npcat_id,npcat_category FROM tbl_newspaper_category WHERE npcat_id NOT IN (SELECT newsp_id FROM tbl_newspaper) AND npcat_status=1;";
+  $sql = "SELECT npcat_id,npcat_category FROM tbl_newspaper_category WHERE npcat_id 
+  NOT IN (SELECT newsp_id FROM tbl_newspaper) AND npcat_status=1;";
 
   $result = $dbobj->query($sql);
 
@@ -129,14 +131,13 @@ function addNewNewsPaper(){
   $dbobj->close();
 }
 
-function viewNewsPaper(){ 
+function viewNewsPaper(){  
   $table = <<<EOT
-  (SELECT news.newsp_id,pub.pub_name,cat.npcat_category,npdet.np_medium,news.newsp_name,news.newsp_price,news.newsp_rlevel,news.newsp_qty,news.newsp_status 
-  FROM tbl_newspaper news 
-  JOIN tbl_newspaper_category cat ON news.npcat_id = cat.npcat_id
-  JOIN tbl_newspaper_details npdet ON news.np_det_id = npdet.np_det_id 
-  JOIN tbl_pub_company pub ON news.pub_id = pub.pub_id WHERE 
-  news.newsp_status=1 ORDER BY newsp_id ASC
+  (SELECT news.newsp_id,pub.pub_name,cat.npcat_category,npdet.np_medium,news.newsp_name,news.newsp_price,news.newsp_rlevel,news.newsp_qty,news.newsp_status FROM tbl_newspaper news 
+    JOIN tbl_newspaper_category cat ON news.npcat_id = cat.npcat_id
+    JOIN tbl_newspaper_details npdet ON news.np_det_id = npdet.np_det_id 
+    JOIN tbl_pub_company pub ON news.pub_id = pub.pub_id WHERE 
+    news.newsp_status=1 ORDER BY newsp_id ASC
     ) temp
 EOT;
  
@@ -146,13 +147,13 @@ EOT;
   $columns = array(
 	array( 'db' => 'newsp_id', 'dt' => 0 ),
   array( 'db' => 'newsp_name', 'dt' => 1 ),
-	array( 'db' => 'npcat_category',  'dt' => 2 ),
-	array( 'db' => 'pub_name',  'dt' => 3 ),
-  array( 'db' => 'np_medium',  'dt' => 4 ),
-  array( 'db' => 'newsp_price',  'dt' => 5 ),
-  array( 'db' => 'newsp_qty',  'dt' => 6 ),
-  array( 'db' => 'newsp_rlevel',  'dt' => 7 ),
-  array( 'db' => 'newsp_status', 'dt' => 8)	
+	array( 'db' => 'npcat_category', 'dt' => 2 ),
+	array( 'db' => 'pub_name', 'dt' => 3 ),
+  array( 'db' => 'np_medium', 'dt' => 4 ),
+  array( 'db' => 'newsp_price', 'dt' => 5 ),
+  array( 'db' => 'newsp_qty', 'dt' => 6 ),
+  array( 'db' => 'newsp_rlevel', 'dt' => 7 ),
+  array( 'db' => 'newsp_status', 'dt' => 8 )	
   );
 
 	// SQL server connection information
@@ -166,7 +167,7 @@ EOT;
     'user' => $user,
     'pass' => $pass,
     'db'   => $db,
-    'host' => $host
+    'host' => $host,
   );
 
   require('ssp.class.php');
@@ -205,7 +206,8 @@ function updateNewspaper(){
 
   $dbobj = DB::connect();
 
-  $sql = "UPDATE tbl_newspaper SET newsp_name=?, pub_id=?, npcat_id=?,  np_det_id=?, newsp_price=?, newsp_rlevel=? WHERE newsp_id=?";
+  $sql = "UPDATE tbl_newspaper SET newsp_name=?, pub_id=?, npcat_id=?,  np_det_id=?, newsp_price=?, 
+  newsp_rlevel=? WHERE newsp_id=?";
 
   $stmt = $dbobj->prepare($sql);
   $stmt->bind_param("ssssidi",$newsp_id,$newsp_name,$pub_id,$npcat_id,$np_det_id,$newsp_price,$newsp_rlevel);
