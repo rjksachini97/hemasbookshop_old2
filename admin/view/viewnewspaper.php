@@ -1,4 +1,4 @@
-<?php
+<?php  
 require("../lib/mod_newspaper.php");
 ?> 
 
