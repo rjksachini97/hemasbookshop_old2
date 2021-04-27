@@ -1,5 +1,5 @@
  <?php
-require("../lib/mod_booking_pay.php");
+require("../lib/mod_booking_pay.php"); 
 
 ?>
 <script>
@@ -59,7 +59,7 @@ require("../lib/mod_booking_pay.php");
       var eid = data[0];
       
  		if(type=="View_details"){
-        var url = "lib/mod_booking_pay.php?type=viewadBookingPayDetails";
+        var url = "lib/mod_booking_pay.php?type=viewnpBookingPayDetails";
          $.ajax({
             method:"POST",
             url:url,
@@ -73,14 +73,12 @@ require("../lib/mod_booking_pay.php");
             }
           });
 
-   }
-
-      else if(type=="Open_Slip"){
-        var url = "lib/mod_booking_pay.php?type=AdviewSlip";
+   }else if(type=="Open_Slip"){
+        var url = "lib/mod_booking_pay.php?type=NpviewSlip";
          $.ajax({
             method:"POST",
             url:url,
-            data:{event_id:eid},
+            data:{np_book_id:eid},
             dataType:"text",
             success:function(result){
               $("#view-slip").html(result);
@@ -89,7 +87,7 @@ require("../lib/mod_booking_pay.php");
               console.log(etxt);
             }
           });
-      }
+    }
      /* else if(type=="Full_payment"){
         swal({
             title:"Do you want to Approve this Booking?",
@@ -122,7 +120,7 @@ require("../lib/mod_booking_pay.php");
           });
         
       }*/
-      else if(type=="Full_payment"){
+    else if(type=="Full_payment"){
         swal({
             title:"Fully paid?",
             text:"You are trying to Approve for Full payment :"+eid,
@@ -131,7 +129,7 @@ require("../lib/mod_booking_pay.php");
             dangerMode:true
           }).then((willDelete)=>{
             if(willDelete){
-              var url = "lib/mod_booking_pay.php?type=confirmfullpayment";
+              var url = "lib/mod_booking_pay.php?type=confirmnpfullpayment";
              $.ajax({
                 method:"POST",
                 url:url,
