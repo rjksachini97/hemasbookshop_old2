@@ -1,4 +1,4 @@
- <?php  
+ <?php   
 require("../lib/mod_ad_booking.php");
 
 ?>
@@ -63,21 +63,35 @@ require("../lib/mod_ad_booking.php");
             "defaultContent": "<a href='#' title='Full_payment'><i class='fas fa-calendar-check'></i></a>",
             "targets": 9
           },*/
+
+            {
+                "data":null,
+                "defaultContent":"<button class='btn btn-primary btn-sm' title='View_details' data-toggle='modal' data-target='#viewdetails' >Details</button>",
+                "targets":9
+            },
+
     
-          {
+         /* {
             "data":null,
             "defaultContent": "<a href='#' title='View_details' data-toggle='modal' data-target='#viewdetails'><i class='fas fa-list-alt'></i></a>",
             "targets": 9
-          },
-          {
+          },*/
+
+            {
+                "data":null,
+                "defaultContent":"<button class='btn btn-danger btn-sm' title='Cancel_Booking'  >Cancel</button>",
+                "targets":10
+            }
+          /*{
             "data":null,
             "defaultContent": "<a href='#' title='Cancel_Booking'><i style='color:red' class='fas fa-window-close'></i></a>",
             "targets": 10
-          }
+          }*/
         ]
     });
 
-   $("#tblviewadbkings tbody").on('click','a',function(){
+
+   $("#tblviewadbkings tbody").on('click','button',function(){
       var type = $(this).attr('title');
       var data = dataTable.row($(this).parents('tr')).data();
       var eid = data[0];
@@ -205,7 +219,7 @@ require("../lib/mod_ad_booking.php");
   <thead>
     <tr>
       <th>ID</th>
-      <th>Cus ID</th>
+      <th>Cus Name</th>
       <th>Ad Mode</th>
       <th>NewsPaper</th>
       <th>Publish Date</th>
@@ -223,7 +237,7 @@ require("../lib/mod_ad_booking.php");
   <tfoot>
     <tr>
       <th>ID</th>
-      <th>Cus ID</th>
+      <th>Cus Name</th>
       <th>Ad Mode</th>
       <th>NewsPaper</th>
       <th>Publish Date</th>
