@@ -26,7 +26,7 @@ require("../lib/mod_ad_order.php");
 				 {
                         "data":"6",
                         "render": function(data,type,row){
-                            return(data=="0")?"<p class='text-success'>Preview not available</p>":"<button class='btn btn-primary btn-sm' title='view Email'>View Email</button>";
+                            return(data=="0")?"<p class='text-success'>Not completed</p>":"<p class='text-primary'>Completed</p>";
                         },
                         "targets":6
                     },
@@ -65,7 +65,7 @@ require("../lib/mod_ad_order.php");
 
 				{
 					"data":null,
-					"defaultContent":"<button class='btn btn-success btn-sm' title='view_order'>View Order</button> ",
+					"defaultContent":"<button class='btn btn-primary btn-sm' title='view_order'>View Order</button> ",
 					"targets":9
 				}
 				]
@@ -136,11 +136,7 @@ require("../lib/mod_ad_order.php");
 				}
 			});
 			
-		}
-
-
-		//This is the function for view ad order
-		else if(type=="view_order"){
+		}else if(type=="view_order"){
 			//var url = "lib/mod_ad_order.php?type=";
 			// $.ajax({
 			// 	method:"POST",
@@ -315,7 +311,7 @@ require("../lib/mod_ad_order.php");
                 </div>
             </div>
             <div class="modal-footer">
-                <img src="../resources/img/page-loading.gif" class="d-none" id="load_imag" width='100px'>
+                <img src="../images/page-loading.gif" class="d-none" id="load_imag" width='100px'>
                 <button type="button" class="btn btn-success"  id="modal_reply_send"> Send</button>
 
             </div>
@@ -326,69 +322,5 @@ require("../lib/mod_ad_order.php");
 
 
 
-<div class="row">
-	<div class="col-sm-3"></div>
-	<div class="col-sm-6 shadow">
-		<div align="center"><h5>Send SMS</h5></div>
-		<form id="smsform" class="pt-3">
-			<label><i class="fas fa-mobile"></i> Enter recepiant number </label>
-			<input type="text" name="contactno" id="contactno" placeholder="contact number">
-			<label><i class="fas fa-comment"></i> Enter text message </label>
-			<input type="text" name="msgtext" id="msgtext" placeholder="enter your text">
-			<button type="button" id="btnmsgsend" name="btnmsgsend" class="btn btn-success border border-dark shadow">Send</button>
-		</form>
-	</div>
-	<div class="col-sm-3"></div>
-</div> 
-<!--   code for send sms  -->
-<?php
-if(isset($_GET["type"])){
-	$type = $_GET["type"];
-	$obj = new ContSMS();
-	$obj->$type();
-}
-class ContSMS{
-	public $conn;
-	function __construct(){
-		require_once("../model/connection.php");
-		$this->conn= Connection::conn();
-	}
-
-	public function sendSMS(){
-		$sender_contact = $_POST["contactno"];
-		$sms_text = $_POST["msgtext"];
-
-		// echo($sender_contact.$sms_text);
-
-		//Username to login
-        $user = "94717228827";
-
-        //Password set
-        $password = "4380";
-
-        //Message encoding to avoid space character ommiting
-        $text = urlencode("$sms_text");
-
-        //Receiver number
-        $to = "$sender_contact";
-
-        //Gateway URL
-        $baseurl = "http://www.textit.biz/sendmsg";
-
-        //Setting sending parameter and pass
-        $url = "$baseurl/?id=$user&pw=$password&to=$to&text=$text&eco=y";
-
-        $ret = file($url);
-        $res = explode(":", $ret[0]);
-        // Get message delivery status if needed
-        if (trim($res[0]) == "OK") {
-            echo "Message Sent - ID : " . $res[1];
-        } else {
-            echo "Sent Failed - Error : " . $res[1];
-        }
-
-	}
-}
-?> 
 
 
