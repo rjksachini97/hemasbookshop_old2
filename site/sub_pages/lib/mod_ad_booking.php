@@ -52,7 +52,8 @@ function getNewspaper(){
 
 function getModesofAd(){
   $dbobj = DB::connect(); 
-  $sql = "SELECT newsad_mode_id,newsad_mode FROM tbl_news_ad_mode WHERE newsad_mode_id NOT IN (SELECT newsa_id FROM tbl_newspaper_ad) AND newsad_mode_status=1;";
+  $sql = "SELECT newsad_mode_id,newsad_mode FROM tbl_news_ad_mode WHERE 
+  newsad_mode_id NOT IN (SELECT newsa_id FROM tbl_newspaper_ad) AND newsad_mode_status=1;";
 
   $result = $dbobj->query($sql);
 
@@ -72,7 +73,8 @@ function getModesofAd(){
 
 function getAdColour(){
   $dbobj = DB::connect(); 
-  $sql = "SELECT  adcolour_id,adcolour_name FROM tbl_ad_colour WHERE adcolour_id NOT IN (SELECT newsa_id FROM tbl_newspaper_ad) AND adcolour_status=1;";
+  $sql = "SELECT  adcolour_id,adcolour_name FROM tbl_ad_colour WHERE adcolour_id NOT IN 
+  (SELECT newsa_id FROM tbl_newspaper_ad) AND adcolour_status=1;";
 
   $result = $dbobj->query($sql);
 
@@ -92,7 +94,8 @@ function getAdColour(){
 
 function getNewspaperCategories(){
   $dbobj = DB::connect(); 
-  $sql = "SELECT newsp_id,newsp_name FROM tbl_newspaper WHERE newsp_id NOT IN (SELECT newsa_id FROM tbl_newspaper_ad) AND newsp_status=1;";
+  $sql = "SELECT newsp_id,newsp_name FROM tbl_newspaper WHERE newsp_id NOT IN 
+  (SELECT newsa_id FROM tbl_newspaper_ad) AND newsp_status=1;";
 
   $result = $dbobj->query($sql);
 
@@ -110,27 +113,11 @@ function getNewspaperCategories(){
   $dbobj->close(); 
 }
 
-
 function getAdCategories(){
   $dbobj = DB::connect(); 
-  if(isset($_POST['mode_id'])){
-    $mode_id = $_POST['mode_id'];
-    if($mode_id=="5"){
-      $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1 and newsac_id='ACAT0005';";
-    }else if($mode_id=="1"){
-      $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1 and newsac_id !='ACAT0005';";
-    }else if($mode_id=="2"){
-      $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1 and newsac_id !='ACAT0004' and newsac_id !='ACAT0005';";
-    }else if($mode_id=="3"){
-      $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1 and newsac_id !='ACAT0004' and newsac_id !='ACAT0005';";
-    }else if($mode_id=="4"){
-      $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1 and newsac_id='ACAT0004';";
-    }else{
-      $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1;";
-    }
-  }else{
-    $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` WHERE newsac_status=1;";
-  }
+  $sql = "SELECT newsac_id,newsac_category FROM `tbl_news_ad_category` 
+  WHERE newsac_status=1;";
+
   $result = $dbobj->query($sql);
 
   if($dbobj->errno){
@@ -147,21 +134,12 @@ function getAdCategories(){
   $dbobj->close(); 
 }
 
-
 function getAdCatDescription(){ 
   $newsac_id = $_POST["newsac_id"];
   $dbobj = DB::connect();
-  if(isset($_POST['mode_id'])){
-    if($_POST['mode_id']=="5"){
-      $sql = "SELECT adcattype_id,adcattype_desc FROM tbl_news_adcat_type WHERE adcattype_id='ADCT0169';";
-    }else if($_POST['mode_id']=="4"){
-      $sql = "SELECT adcattype_id,adcattype_desc FROM tbl_news_adcat_type WHERE adcattype_id='ADCT0166' OR adcattype_id='ADCT0167';";
-    }else{
-      $sql = "SELECT adcattype_id,adcattype_desc FROM tbl_news_adcat_type ";
-    }
-  }else{
-    $sql = "SELECT adcattype_id,adcattype_desc FROM tbl_news_adcat_type WHERE newsac_id='$newsac_id'";
-  }
+  
+   $sql = "SELECT adcattype_id,adcattype_desc FROM tbl_news_adcat_type 
+   WHERE newsac_id='$newsac_id'";
     $result = $dbobj->query($sql);
 
     if($dbobj->errno){
@@ -170,37 +148,18 @@ function getAdCatDescription(){
     }
     $output ="";
     while($row =$result->fetch_assoc()){
-        $output .="<option value='".$row['adcattype_id']."'>".$row['adcattype_desc']."</option>";
+        $output .="<option value='".$row['adcattype_id']."'>".$row['adcattype_desc'].
+        "</option>";
     }
-    if(!isset($_POST['mode_id'])){
-      $out="<option value=''>Select Ad Category Description</option>";
-    }
+    $out="<option value=''>Select Ad Category Description</option>";
     echo($out.$output);
     $dbobj->close();
 }
 
 function getAdSize(){
-  
   $dbobj = DB::connect(); 
-  if(isset($_POST['mode_id'])){
-    $mode_id = $_POST['mode_id'];
-    if($mode_id=="5"){
-      $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1 and admode_details_id=3 ;";
-    }else if($mode_id=="1"){
-      $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1 and admode_details_id=1 ;";
-    }else if($mode_id=="2"){
-      $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1 and admode_details_id=2 ;";
-    }else if($mode_id=="3"){
-      $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1 and admode_details_id=2 ;";
-    }else if($mode_id=="4"){
-      $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1 and admode_details_id=1 ;";
-    }else{
-      $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1;";
-    } 
-  }else{
-    $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` WHERE admode_details_status=1;";
-  }
-  
+  $sql = "SELECT admode_details_id,admode_details_size FROM `tbl_ad_modes_details` 
+  WHERE admode_details_status=1;";
 
   $result = $dbobj->query($sql);
 
@@ -212,7 +171,8 @@ function getAdSize(){
    $nor = $result->num_rows;
   if($nor>0){
     while($rec = $result->fetch_assoc()){
-      echo("<option value='".$rec["admode_details_id"]."'>".$rec["admode_details_size"]."</option>");
+      echo("<option value='".$rec["admode_details_id"]."'>".$rec["admode_details_size"].
+      "</option>");
     }
   }
   $dbobj->close(); 
@@ -238,7 +198,8 @@ function addNewAdBooking(){
           $crnt_date = date("Y-m-d");
 
           //Advertisment images
-          if(file_exists($_FILES['imgad']['tmp_name']) || is_uploaded_file($_FILES['imgad']['tmp_name'])){
+          if(file_exists($_FILES['imgad']['tmp_name']) || 
+          is_uploaded_file($_FILES['imgad']['tmp_name'])){
             $ad_img_name = $_FILES["imgad"]['name']; //image nam
             $ad_img_tmp_name = $_FILES["imgad"]['tmp_name']; //image temporary name
             $ad_img_ext = substr($ad_img_name, strrpos($ad_img_name, ".")); //take image extention
@@ -275,7 +236,8 @@ function addNewAdBooking(){
 
           
            //BRC images
-          if(file_exists($_FILES['imgupbr']['tmp_name']) || is_uploaded_file($_FILES['imgupbr']['tmp_name'])){
+          if(file_exists($_FILES['imgupbr']['tmp_name']) || 
+          is_uploaded_file($_FILES['imgupbr']['tmp_name'])){
             $brc_img_name = $_FILES["imgupbr"]['name']; //image nam
             $brc_img_tmp_name = $_FILES["imgupbr"]['tmp_name']; //image temporary name
             $brc_img_ext = substr($brc_img_name, strrpos($brc_img_name, ".")); //take image extention
@@ -297,18 +259,26 @@ function addNewAdBooking(){
 
           $dbobj = DB::connect();
 
-          $sql = "INSERT INTO tbl_ad_booking (cus_id,newsad_mode,adcolour_name,newsp_name,newsac_category,adcattype_desc, admode_details_size,crnt_date,adpub_date,ad_description,ad_wc,ad_tot_price,ad_pay_status,ad_book_status,ad_img,ad_img_nic,ad_img_br) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+          $sql = "INSERT INTO tbl_ad_booking (cus_id,newsad_mode_id,adcolour_id,newsp_id,
+          newsac_id,adcattype_id, admode_details_id,crnt_date,adpub_date,
+          ad_description,ad_wc,ad_tot_price,ad_pay_status,ad_book_status,ad_img,ad_img_nic,
+          ad_img_br) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
           $stmt = $dbobj->prepare($sql);
-          $stmt->bind_param("isssssssssidiisss",$cus_id,$newsad_mode,$adcolour_name,$newsp_name,$newsac_category,$adcattype_desc,$admode_details_size,$crnt_date,$adpub_date,$ad_description,$ad_wc,$ad_tot_price,$ad_book_status,$ad_book_status,$ad_img_pathsave,$nic_img_pathsave,$brc_img_pathsave);
+          $stmt->bind_param("iissssisssidiisss",$cus_id,$newsad_mode,$adcolour_name,
+          $newsp_name,$newsac_category,$adcattype_desc,$admode_details_size,$crnt_date,
+          $adpub_date,$ad_description,$ad_wc,$ad_tot_price,$ad_book_status,$ad_book_status,
+          $ad_img_pathsave,$nic_img_pathsave,$brc_img_pathsave);
           
           if(!$stmt->execute()){
               echo(" AdBooking SQL Error: ".$stmt->error);
               exit;
           }else {
             $last_id= mysqli_insert_id($dbobj);
-            $sql_adorder = "INSERT INTO tbl_ad_order (cus_id,ad_book_id,newsad_mode,adorder_date,publish_date,adorder_price,adorder_status) VALUES (?,?,?,?,?,?,?)";
+            $sql_adorder = "INSERT INTO tbl_ad_order (cus_id,ad_book_id,newsad_mode_id,
+            adorder_date,publish_date,adorder_price,adorder_status) VALUES (?,?,?,?,?,?,?)";
             $stmt_adorder= $dbobj->prepare($sql_adorder);
-            $stmt_adorder->bind_param("iisssdi",$cus_id,$last_id,$newsad_mode,$crnt_date,$adpub_date,$ad_tot_price,$ad_book_status);
+            $stmt_adorder->bind_param("iiissdi",$cus_id,$last_id,$newsad_mode,$crnt_date,
+            $adpub_date,$ad_tot_price,$ad_book_status);
             if(!$stmt_adorder->execute()){
               echo(" Batch SQL Error: ".$stmt_adorder->error);
               exit;
