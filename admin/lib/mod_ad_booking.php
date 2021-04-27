@@ -8,7 +8,19 @@ if(isset($_GET["type"])){
 
 function viewadbooking(){
 
-	$table = 'tbl_ad_booking';
+	$table = <<<EOT
+	(SELECT  
+	adb.ad_book_id,np.newsp_name,npm.newsad_mode,cus.cus_name,adb.adpub_date,
+	adb.ad_tot_price,adb.ad_pay_status,adb.ad_book_status FROM tbl_ad_booking adb
+	JOIN tbl_reg_customer cus ON adb.cus_id = cus.cus_id
+	JOIN tbl_newspaper np ON np.newsp_id = adb.newsp_id
+	JOIN tbl_news_ad_mode npm ON npm.newsad_mode_id = adb.newsad_mode_id 
+	ORDER BY ad_book_id
+	  ) temp
+EOT;
+	
+
+
 	//echo("viewEmp");
 	// DB table to use
 	//$table = ' tbl_ad_booking';
@@ -18,7 +30,7 @@ function viewadbooking(){
 
 	$columns = array(
 	    array( 'db' => 'ad_book_id','dt' => 0 ),
-	    array( 'db' => 'cus_id','dt' => 1 ),
+	    array( 'db' => 'cus_name','dt' => 1 ),
 	    array( 'db' => 'newsad_mode','dt' => 2 ),
 	    array( 'db' => 'newsp_name','dt' => 3 ),
 	    array( 'db' => 'adpub_date','dt' => 4 ),
@@ -53,8 +65,12 @@ function viewadBookingDetails(){
 	$booking_id = $_POST['booking_id'];
 	$dbobj=DB::connect();
 
-	$sql = "SELECT * FROM tbl_ad_booking abook, tbl_reg_customer cus 
-			WHERE abook.cus_id=cus.cus_id AND abook.ad_book_id=1=$booking_id;";
+	$sql = "SELECT * FROM tbl_ad_booking book, tbl_newspaper np, tbl_reg_customer cus, tbl_news_ad_mode adm, 
+	tbl_ad_colour cl, tbl_news_ad_category adc, tbl_news_adcat_type act, tbl_ad_modes_details admdet 
+	WHERE book.cus_id=cus.cus_id AND book.newsp_id=np.newsp_id AND book.newsad_mode_id=adm.newsad_mode_id 
+	AND book.adcolour_id=cl.adcolour_id AND book.newsac_id=adc.newsac_id AND 
+	book.adcattype_id=act.adcattype_id AND book.admode_details_id=admdet.admode_details_id AND 
+	book.ad_book_id='$booking_id';";
 
 	$result = $dbobj->query($sql);
 
@@ -113,7 +129,7 @@ function AdviewSlip(){
 			$ad_book_id = $_POST['ad_book_id'];
 			$dbobj=DB::connect();
 
-			$sql = "SELECT slip_img FROM tbl_event_book WHERE ad_book_id=$ad_book_id;";
+			$sql = "SELECT ad_img_slip FROM tbl_ad_booking WHERE ad_book_id=$ad_book_id;";
 
 			$result = $dbobj->query($sql);
 
