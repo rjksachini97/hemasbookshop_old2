@@ -17,7 +17,9 @@ $dbobj->close();
 function viewnpbooking(){
 
 	$table = <<<EOT
- 		(SELECT book.np_book_id,cus.cus_name,np.newsp_name,book.np_book_qty,book.np_order_time,book.crnt_date,book.order_date,book.np_tot_price,book.np_pay_status,book.np_book_status 
+ 		(SELECT book.np_book_id,cus.cus_name,np.newsp_name,book.np_book_qty,
+		 book.np_order_time,book.crnt_date,book.order_date,book.np_tot_price,
+		 book.np_pay_status,book.np_book_status 
  		FROM tbl_newspaper_booking book
 		JOIN tbl_reg_customer cus ON book.cus_id = cus.cus_id
 		JOIN tbl_newspaper np ON book.newsp_id = np.newsp_id ORDER BY np_book_id
@@ -61,12 +63,14 @@ EOT;
     SSP::complex($_POST, $sql_details, $table, $primaryKey, $columns,null)
 	);
 }
-
+ 
 function viewBookingDetails(){
 	$booking_id = $_POST['booking_id'];
 	$dbobj=DB::connect();
 
-	$sql = "SELECT * FROM tbl_newspaper_booking book, tbl_newspaper np, tbl_reg_customer cus WHERE book.cus_id=cus.cus_id AND book.newsp_id=np.newsp_id AND book.np_book_id=$booking_id;";
+	$sql = "SELECT * FROM tbl_newspaper_booking book, tbl_newspaper np, tbl_reg_customer cus
+	 WHERE book.cus_id=cus.cus_id AND book.newsp_id=np.newsp_id AND 
+	 book.np_book_id=$booking_id;";
 
 	$result = $dbobj->query($sql);
 
@@ -104,7 +108,7 @@ function viewBookingDetails(){
 	echo $output;
 }
 
-function viewSlip(){
+/*function viewSlip(){
 	$booking_id = $_POST['booking_id'];
 	$dbobj=DB::connect();
 
@@ -116,12 +120,13 @@ function viewSlip(){
 
 	$row = $result->fetch_assoc();
 	if($row['np_img_slip'] != ""){///correcr path
-		$output .= "<img class='img-thumbnail' src='../..//images/Bankslips/Wedding_slips/" . $row['np_img_slip'] . "' />";
+		$output .= "<img class='img-thumbnail' 
+		src='../..//images/BankSlips/Wedding_slips/" . $row['np_img_slip'] . "' />";
 	}else{
 		$output .="<i>No Image Uploaded!</i>";
 	}
 	echo $output;
-}
+}*/
 
 
 function confirmBooking(){
