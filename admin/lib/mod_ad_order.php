@@ -50,6 +50,7 @@ EOT;
 
 function completeAdOrder(){
 	
+	
 }
 
 //This is the function for sending SMS
@@ -76,7 +77,7 @@ function sendSMS(){
 	echo "Sent Failed - Error : ".$res[1];
 	}
 
-}
+} 
 
  
 
