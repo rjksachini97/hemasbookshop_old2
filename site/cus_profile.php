@@ -1,6 +1,7 @@
 <?php 
 session_start();
  require_once("lib/dbconnection.php");
+ require("lib/mod_cus.php");
  $dbobj=DB::connect();
 
 $cus_id= $_SESSION["session_cus"]["cus_id"];
@@ -233,7 +234,9 @@ $resad = $dbobj->query($sqlad);
                                 
                               </th>
 
-                              <th><input type="button" id="btnreg" class="btn btn-success" name="btnreg" value="Register"></th>     
+                               <th>
+                          <button class='btn btn-warning btn-sm' id="View_np_details" title='View_np_details' data-toggle='modal' data-target='#viewnpdetails' >Details</button>
+                        </th>       
                               
                             </tr>
                           <?php
@@ -325,7 +328,9 @@ $resad = $dbobj->query($sqlad);
                                 echo "Approval Pending";
                               } ?></th>
 
-                        <th><input type="button" id="btnreg" class="btn btn-warning" name="btnreg" value="Details"></th>     
+                        <th>
+                          <button class='btn btn-warning btn-sm' id="View_details" title='View_details' data-toggle='modal' data-target='#viewdetails' >Details</button>
+                        </th>     
                               
                         </tr>
                           <?php
@@ -341,28 +346,112 @@ $resad = $dbobj->query($sqlad);
          <!-- /////////////////////////////////Ad Booking infomations End///////////////////////////////////// -->
 
 
+ <!-- View full newspaper booking details Modal -->
+    <div class="modal fade" id="viewnpdetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Booking Details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-horizontal" id="view-booking-details">    
+                                                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+ <!-- View full ad booking details Modal -->
+    <div class="modal fade" id="viewdetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Booking Details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-horizontal" id="view-booking-details">    
+                                                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
 
 <script type="text/javascript">
-              $(function(){
+  $(function(){
             
+    $("#logout_btn").click(function(e){
+       e.preventDefault();
+        swal({
+          title:"Do you want to Logout from Your Account?",
+          text:"You are trying to logout from <?php echo $_SESSION['session_cus']['cus_name']; ?>",
+          icon:"warning",
+          buttons:true,
+          dangerMode:true
+        }).then((willLogout)=>{
+          if(willLogout){
+            window.location = "lib/logout.php";
+          }
+        });
+      });
+    }); 
 
-              $("#logout_btn").click(function(e){
-                e.preventDefault();
-                 
-                 swal({
-                        title:"Do you want to Logout from Your Account?",
-                        text:"You are trying to logout from <?php echo $_SESSION['session_cus']['cus_name']; ?>",
-                        icon:"warning",
-                        buttons:true,
-                        dangerMode:true
-                     }).then((willLogout)=>{
-                          if(willLogout){
-                            window.location = "lib/logout.php";
-                          }
-                        });
-              });
-            });    
+  $(function(){
+
+    $("#View_details").on('click','button',function(){
+      var type = $(this).attr('title');
+      var data = dataTable.row($(this).parents('tr')).data();
+      var eid = data[0];
+
+      if(type=="View_details"){
+        var url = "lib/mod_cus.php?type=viewadBookingDetails";
+         $.ajax({
+            method:"POST",
+            url:url,
+            data:{booking_id:eid},
+            dataType:"text",
+            success:function(result){
+              $("#view-booking-details").html(result);
+            },
+            error:function(eobj,etxt,err){
+              console.log(etxt);
+            }
+          });
+
+   }
+ });
+
+}); 
+
 
 </script>
 <script type="text/javascript">
