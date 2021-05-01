@@ -18,6 +18,7 @@ require("../lib/mod_news_order.php");
           {"data":"3"},
           {"data":"4"},
           {"data":"5"},
+          {"data":"6"},
         ],
         "columnDefs":[
           {
@@ -32,20 +33,26 @@ require("../lib/mod_news_order.php");
             "targets": 5
           },
           {
-                "data":null,
-                "defaultContent":"<button class='btn btn-primary btn-sm  ' id='send)delivery' >Delivery</button> <button class='btn btn-success btn-sm  ' id='add_pay' >Send Delivery</button>"+
-                " <button class='btn btn-primary btn-sm' id='btn_view_details'><i class='fas fa-clipboard-list'></i>View Details</button>",
+                "data":6,
+                "render":function(data,type,row){
+                  if(data=="0"){
+                      return "<a class='btn btn-success btn-sm action_button' id='send_delivery' >Send Delivery</a>"
+                    }else{
+                       return "<a class='btn btn-primary btn-sm action_button ' id='view_delivery' >Delivery</a> "
+                  }
+                },
                 "targets":6
             },
-         /* {
+          {
             "data":null,
-            "defaultContent":"<a href='#' title='view_orders'><i class='fas fa-2x fa-clipboard-list'></i></a> ",
+            "defaultContent":
+                " <a class='btn btn-primary btn-sm action_button' id='btn_view_details'><i class='fas fa-clipboard-list'></i>View Details</a>",
             "targets": 7
-          },*/
+          },
         ]
     });
     $("#tblviewnewsorder tbody").on('click','a',function(){ // on command is dynmacally content  a- anker tag
-        var type= $(this).attr('title');
+        var type= $(this).attr('id');
         var data= dataTable.row($(this).parents('tr')).data(); //parents command using for select top data
         var oid = data[0];
 
@@ -80,7 +87,12 @@ require("../lib/mod_news_order.php");
                 });
               }
           });
-        }else if(type=="view_orders"){
+        }else if(type=="send_delivery"){
+          $("#order_id").val(oid);
+          $("#sendDelivery").modal("show");
+            
+        } else if(type=="view_orders"){
+
         	var url = "lib/mod_news_order.php?type=viewNPOrderDetails";
         	$.ajax({
         		method:"POST",
@@ -127,7 +139,7 @@ require("../lib/mod_news_order.php");
       <th>Delivery Date</th>
       <th>Total Price</th>
       <th>Delivery Details</th>
-      <th>Status</th>
+      <th>Actions</th>
       <th></th>
     </tr>
   </thead>
@@ -139,7 +151,7 @@ require("../lib/mod_news_order.php");
       <th>Delivery Date</th>
       <th>Total Price</th>
       <th>Delivery Details</th>
-      <th>Status</th>
+      <th>Actions</th>
       <th></th>
     </tr>
   </tfoot> 
@@ -194,23 +206,27 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-body" id="del_body">
                 <input type="hidden" name="id" id="id" value="" >
                 <div class="form-group row">
-                <label for="cmbdelname" class="col-lg-4 col-form-label">Deliveryman</label>
-                <div class="col-sm-3">
-                  <select class="form-control" name="cmbdelname" id="cmbdelname">
-                    <option>-- Select Deliveryman--</option>
-                    <?php getdeliveryman(); ?>
-                  </select>
+                    <label for="" class="col-lg-4 col-form-label">Order ID</label>:
+                    <input type="text" class="ml-1 col-lg-6 form-control" readonly name="order_id" id="order_id">
                 </div>
-              </div>
+                <div class="form-group row">
+                  <label for="cmbdelname" class="col-lg-4 col-form-label">Deliveryman</label>
+                  <div class="col-sm-3">
+                    <select class="form-control" name="cmbdelname" id="cmbdelname">
+                      <option>-- Select Deliveryman--</option>
+                      <?php getdeliveryman(); ?>
+                    </select>
+                  </div>
+                </div>
                 <div class="form-group row">
                   <label for="veh_no" class="col-lg-4 col-form-label">Vehicle Number</label>:
-                    <div class="col-sm-3">
+                  <div class="col-sm-3">
                     <select class="form-control" name="veh_no" id="veh_no">
-                    <option>--Select Vehicle--</option>
-                    <option>QL-9904</option>
-                    <option>ER-01860</option>
-                  </select>
-                </div>
+                      <option>--Select Vehicle--</option>
+                      <option>QL-9904</option>
+                      <option>ER-01860</option>
+                    </select>
+                  </div>
                 </div>
                <div class="form-group row">
                     <label for="" class="col-lg-4 col-form-label">Title</label>:

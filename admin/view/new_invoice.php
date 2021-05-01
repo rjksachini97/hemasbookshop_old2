@@ -568,7 +568,8 @@ if(isset($_SESSION["user"]["uid"])){
                 url:url,
                 data:data,
                 dataType:"text",
-                success:function (result) {                    
+                success:function (result) { 
+                    alert(result);                   
                     res = result.split(",");
                     msg = res[0].trim();
                     if(msg=="0"){

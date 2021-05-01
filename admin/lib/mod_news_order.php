@@ -9,10 +9,9 @@ function viewNPOrders(){
 
 	$table = <<<EOT
 				( SELECT od.order_id,cus.cus_name,od.order_date,od.order_comp_date,
-				od.order_price,od.order_status
+				od.order_price,od.order_status,od.delivery_status
 					FROM tbl_newspaper_order od 
-					JOIN tbl_reg_customer cus ON od.cus_id = cus.cus_id WHERE
-					od.order_status=1 ORDER  BY order_id
+					JOIN tbl_reg_customer cus ON od.cus_id = cus.cus_id ORDER  BY order_id
 				)temp
 EOT;
 				//Table's PrimaryKey
@@ -24,7 +23,8 @@ EOT;
 					array('db' => 'order_date','dt' => 2 ),
 					array('db' => 'order_comp_date','dt' => 3 ),
 					array('db' => 'order_price','dt' => 4 ),
-					array('db' => 'order_status','dt' => 5 )
+					array('db' => 'order_status','dt' => 5 ),
+					array('db' => 'delivery_status','dt' => 6 ),
 				);
 
 				//SQL Server Coonection Information
@@ -162,11 +162,13 @@ function getdeliveryman(){
   }
 
    $nor = $result->num_rows;
-  if($nor>0){
-    while($rec = $result->fetch_assoc()){
-      echo("<option value='".$rec["delm_id"]."'>".$rec["delm_name"]."</option>");
-    }
-  }
+   $output = "<option>-- Select Deliveryman--</option>";
+  // if($nor>0){
+  //   while($rec = $result->fetch_assoc()){
+  //     $output .= "<option value='".$rec["delm_id"]."'>".$rec["delm_name"]."</option>";
+  //   }
+  // }
+  echo ($output);
   $dbobj->close(); 
 }
 

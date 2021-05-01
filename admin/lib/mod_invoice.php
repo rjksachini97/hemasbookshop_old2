@@ -1,4 +1,4 @@
-<?php     
+<?php      
 require_once("dbconnection.php");
 date_default_timezone_set("Asia/Colombo");
 
@@ -18,6 +18,7 @@ function getInvId(){
     if($dbobj->errno){
         echo("SQL Error : ".$dbobj->error);
         exit;
+    
     }
     $row = $result->fetch_array();
     $count = $row[0];
@@ -241,11 +242,12 @@ $sql_inv = "INSERT INTO tbl_invoice (inv_id,cus_id,inv_date,inv_qty,inv_discount
         $row = count($tbl_id = $_POST['tbl_id']);
         for($i=0; $i<$row; $i++){
 
-            $sql_prod = "INSERT INTO tbl_inv_details (inv_id,newsp_id,newsp_cprice,newsp_qty,newsp_sprice) VALUES (
-            '$inv_id','$tbl_id[$i]','$newsp_cprice[$i]','$tbl_qty[$i]','$tbl_sprice[$i])";
+            $sql_prod = "INSERT INTO tbl_inv_details (inv_id,newsp_id,newsp_cprice,newsp_qty,newsp_sprice,inv_det_status) VALUES (?,?,?,?,?,?)";
+
             $stmt_prod =$dbobj->prepare($sql_prod);
+            $stmt_prod->bind_param("ssdidi",$inv_id,$tbl_id[$i],$newsp_cprice[$i],$tbl_qty[$i],$tbl_sprice[$i],$status);
             if(!$stmt_prod->execute()){
-                 echo ("0,SQL Error ".$stmt_prod->error);
+                 echo ("02,SQL Error ".$stmt_prod->error);
              }else{
                 $res = updateStock($dbobj,$batch_id[$i],$tbl_id[$i],$tbl_qty[$i]);
                 if ($res=="0"){
