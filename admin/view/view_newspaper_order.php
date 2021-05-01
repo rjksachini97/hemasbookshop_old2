@@ -1,4 +1,4 @@
-<?php 
+<?php  
 require("../lib/mod_news_order.php");  
 ?>
 
@@ -238,6 +238,12 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             
                     </textarea>
                 </div>
+
+
+                <div class="form-group">
+                          <label for="bg_time">Photoshoot Begining time<b class="text-danger">*</b></label>
+                          <input type="time" class="form-control col-sm-4" id="bg_time" name="bg_time"></input>
+                        </div> 
             </div>
             <div class="modal-footer">
                 <img src="../resources/img/page-loading.gif" class="d-none" id="load_imag" 
